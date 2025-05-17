@@ -1,0 +1,1224 @@
+/* Color palette maker styles */
+.color-palette-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.glass-card {
+  background: rgba(30, 30, 40, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 1000px;
+  transition: all 0.3s ease;
+}
+
+.palette-title {
+  text-align: center;
+  color: white;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Palette options styles */
+.palette-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.option-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.option-section h3 {
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+/* Type selector styles */
+.type-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.type-option {
+  background: rgba(40, 40, 60, 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.type-option:hover {
+  background: rgba(50, 50, 70, 0.7);
+  transform: translateY(-2px);
+}
+
+.type-option.selected {
+  background: rgba(60, 60, 100, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.type-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.type-details h4 {
+  color: white;
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.type-details p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Type-specific icons */
+.monochromatic {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+.analogous {
+  background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+}
+
+.complementary {
+  background: linear-gradient(135deg, #ff0099 0%, #493240 100%);
+}
+
+.triadic {
+  background: linear-gradient(135deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
+}
+
+.tetradic {
+  background: linear-gradient(45deg, #ff0000 0%, #ff8c00 25%, #00ff00 50%, #0000ff 75%, #ff00ff 100%);
+}
+
+.random {
+  background: linear-gradient(135deg, #ff00cc 0%, #3333ff 20%, #00ccff 40%, #33cc33 60%, #ffff00 80%, #ff6600 100%);
+}
+
+/* Color picker styles */
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.color-picker {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.random-base-btn {
+  background: rgba(60, 60, 100, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.random-base-btn:hover {
+  background: rgba(70, 70, 120, 0.7);
+  transform: rotate(45deg);
+}
+
+.color-wheel-container {
+  width: 100%;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.color-wheel-container.mobile {
+  transform: scale(0.9);
+  transform-origin: top center;
+}
+
+.color-wheel-container.tiny {
+  transform: scale(0.75);
+  transform-origin: top center;
+  margin-top: 0.5rem;
+  margin-bottom: -1rem; /* Compensate for the reduced scale */
+}
+
+.color-value {
+  color: white;
+  font-size: 1rem;
+  font-family: monospace;
+}
+
+/* Generated palette styles */
+.generated-palette {
+  margin-bottom: 2rem;
+}
+
+.palette-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.generate-btn, .save-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+  color: white;
+}
+
+.generate-btn:hover, .save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.save-palette-section {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.palette-name-input {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(40, 40, 60, 0.5);
+  color: white;
+  font-size: 1rem;
+}
+
+.palette-name-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+.btn-icon.small {
+  font-size: 1rem;
+}
+
+/* Colors display styles */
+.colors-display {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.colors-display.loading {
+  position: relative;
+  min-height: 200px;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 40, 0.7);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-overlay p {
+  color: white;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.color-card {
+  border-radius: 8px;
+  height: 120px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.color-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.color-info {
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0 0 8px 8px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.color-hex {
+  display: block;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.color-rgb {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  font-family: monospace;
+}
+
+.touch-hint {
+  display: block;
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.light-text {
+  color: white;
+}
+
+.copy-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Notification styles */
+.notification {
+  background: rgba(0, 200, 83, 0.8);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.save-notification {
+  background: rgba(0, 176, 155, 0.8);
+}
+
+/* Saved palettes section */
+.saved-palettes-section {
+  margin-top: 1.5rem;
+}
+
+.toggle-saved-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(40, 40, 60, 0.5);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.toggle-saved-btn:hover {
+  background: rgba(50, 50, 70, 0.7);
+}
+
+.saved-palettes {
+  margin-top: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin; /* Firefox */
+}
+
+.saved-palettes::-webkit-scrollbar {
+  width: 6px;
+}
+
+.saved-palettes::-webkit-scrollbar-track {
+  background: rgba(30, 30, 40, 0.3);
+  border-radius: 10px;
+}
+
+.saved-palettes::-webkit-scrollbar-thumb {
+  background-color: rgba(130, 130, 160, 0.5);
+  border-radius: 10px;
+}
+
+.palettes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.saved-palette-item {
+  background: rgba(40, 40, 60, 0.5);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.palette-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.palette-header h4 {
+  margin: 0;
+  color: white;
+  font-weight: 500;
+}
+
+.palette-date {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.palette-preview {
+  display: flex;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.palette-preview:hover {
+  transform: translateY(-2px);
+}
+
+.preview-color {
+  flex: 1;
+}
+
+.preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.palette-preview:hover .preview-overlay {
+  opacity: 1;
+}
+
+.preview-hint {
+  color: white;
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.palettes-list.mobile-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.palette-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.load-palette-btn, .delete-palette-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.load-palette-btn {
+  background: rgba(0, 176, 155, 0.5);
+  color: white;
+}
+
+.delete-palette-btn {
+  background: rgba(200, 30, 30, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.load-palette-btn:hover {
+  background: rgba(0, 176, 155, 0.8);
+}
+
+.delete-palette-btn:hover {
+  background: rgba(200, 30, 30, 0.5);
+}
+
+.no-saved-palettes {
+  padding: 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .glass-card {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 992px) {
+  .colors-display {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .palette-options {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .option-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .color-palette-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .glass-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .colors-display {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .palette-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .save-palette-section {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .type-selector {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .palettes-list {
+    grid-template-columns: 1fr;
+  }
+
+  /* Improve touch targets on mobile */
+  .generate-btn, .save-btn, .toggle-saved-btn, .load-palette-btn, .delete-palette-btn {
+    min-height: 44px;  /* Recommended minimum touch target size */
+  }
+
+  .color-card {
+    min-height: 110px;
+  }
+  
+  .type-option {
+    min-height: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .color-palette-container {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .glass-card {
+    padding: 1rem;
+    backdrop-filter: blur(5px); /* Less intensive blur for better performance */
+  }
+  
+  .colors-display {
+    grid-template-columns: repeat(2, 1fr); /* Keep 2 columns for better use of space */
+    gap: 0.5rem;
+  }
+  
+  .color-card {
+    height: 90px;
+  }
+  
+  .palette-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .option-section {
+    width: 100%;
+  }
+  
+  .type-option {
+    padding: 0.75rem;
+    flex-direction: column; /* Stack icon and text for better small screen layout */
+    text-align: center;
+    width: 100% !important;
+  }
+  
+  .type-icon {
+    width: 35px;
+    height: 35px;
+    margin: 0 auto 0.5rem;
+  }
+  
+  .type-details h4 {
+    font-size: 0.9rem;
+  }
+  
+  .type-details p {
+    font-size: 0.75rem;
+    display: none; /* Hide descriptions on very small screens */
+  }
+
+  /* Simplify palette header on small screens */
+  .palette-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .color-info {
+    padding: 0.5rem;
+  }
+
+  .color-hex {
+    font-size: 0.85rem;
+  }
+
+  .color-rgb {
+    font-size: 0.7rem;
+  }
+
+  /* Show hex color only on small screens */
+  .color-info .color-rgb {
+    display: none;
+  }
+
+  /* More compact notification */
+  .notification {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+
+
+/* Extra small devices (350px and below) */
+@media (max-width: 500px) {
+  .color-palette-container {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .glass-card {
+    padding: 0.75rem 0.5rem;
+    border-radius: 10px;
+  }
+
+  .palette-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Further optimize the palette type selector for tiny screens */
+  .tiny-screen .palette-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tiny-screen .type-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .tiny-screen .type-option {
+    padding: 0.35rem 0.5rem;
+    min-height: 0;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .tiny-screen .type-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+  }
+
+  .tiny-screen .type-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .tiny-screen .type-details h4 {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .tiny-screen .type-details p {
+    display: none; /* Hide description on tiny screens for compactness */
+  }
+
+  .tiny-screen .option-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+  }
+
+  /* Optimize spacing for tiny screens */
+  .tiny-screen .palette-options {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .tiny-screen .option-section {
+    min-width: auto;
+  }
+
+  /* Make scrollable elements more touch-friendly */
+  .tiny-screen .saved-palettes::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .tiny-screen .saved-palettes::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+
+  .tiny-screen .saved-palettes::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  /* Improve usability of tap targets on tiny screens */
+  .tiny-screen .color-card,
+  .tiny-screen .type-option,
+  .tiny-screen button {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .tiny-screen .color-card:active,
+  .tiny-screen .type-option:active,
+  .tiny-screen button:active {
+    opacity: 0.8;
+    transition: opacity 0.1s ease;
+  }
+
+  /* Optimize color cards for tiny screens */
+  .color-card {
+    height: 70px;
+  }
+
+  .color-info {
+    padding: 0.35rem;
+  }
+
+  .color-hex {
+    font-size: 0.75rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .color-rgb {
+    font-size: 0.65rem;
+  }
+
+  .touch-hint {
+    font-size: 0.6rem;
+  }
+
+  /* Make buttons more compact */
+  .generate-btn, .save-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .palette-name-input {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Optimize saved palettes section */
+  .saved-palette-item {
+    padding: 0.5rem;
+  }
+
+  .palette-header h4 {
+    font-size: 0.9rem;
+  }
+
+  .palette-date {
+    font-size: 0.7rem;
+  }
+
+  .palette-preview {
+    height: 25px;
+    margin-bottom: 0.5rem;
+  }
+
+  .preview-hint {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+
+  /* Fix for buttons on very small screens */
+  .load-palette-btn, .delete-palette-btn {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.75rem;
+  }
+
+  .btn-icon.small {
+    font-size: 0.8rem;
+  }
+
+  /* Optimize color picker */
+  .color-picker {
+    width: 50px;
+    height: 50px;
+  }
+
+  .random-base-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Ensure that the loading spinner is properly sized */
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+  }
+
+  .loading-overlay p {
+    font-size: 0.8rem;
+  }
+
+  /* Optimize notifications for tiny screens */
+  .tiny-screen .notification {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    bottom: 15px;
+  }
+
+  .tiny-screen .copy-indicator {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Enhance color picker section for tiny screens */
+.tiny-screen .color-picker-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+}
+
+.tiny-screen .color-picker {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  margin-right: 0.2rem;
+  border-radius: 4px;
+}
+
+.tiny-screen .color-value {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.tiny-screen .random-base-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0.15rem;
+}
+
+/* Optimize palette actions and inputs */
+.tiny-screen .palette-actions {
+  flex-direction: column;
+  padding: 0.3rem;
+}
+
+.tiny-screen .save-palette-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.3rem;
+}
+
+.tiny-screen .palette-name-input {
+  padding: 0.3rem 0.4rem;
+  font-size: 0.8rem;
+  height: 32px;
+}
+
+.tiny-screen .generate-btn,
+.tiny-screen .save-btn {
+  padding: 0.3rem 0.4rem;
+  font-size: 0.75rem;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  line-height: 1;
+}
+
+.tiny-screen .save-btn {
+  width: 100%;
+}
+
+/* Enhanced notifications for tiny screens */
+.tiny-screen .notification {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  bottom: 10px;
+  max-width: 90%;
+  border-radius: 4px;
+}
+
+.tiny-screen .copy-indicator {
+  padding: 0.15rem 0.3rem;
+  font-size: 0.65rem;
+  border-radius: 3px;
+}
+
+/* Add smooth transitions for interactive elements */
+.type-option, .color-card, .generate-btn, .save-btn,
+.load-palette-btn, .delete-palette-btn, .toggle-saved-btn {
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Enhance active states for touch interactions */
+@media (hover: none) {
+  .type-option:active, .generate-btn:active, .save-btn:active,
+  .load-palette-btn:active, .delete-palette-btn:active {
+    transform: scale(0.97);
+  }
+  
+  .color-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .generate-btn:active {
+    background: linear-gradient(135deg, #5a10aa 0%, #1565dc 100%);
+  }
+  
+  .save-btn:active {
+    background: linear-gradient(135deg, #00a08b 0%, #86b32d 100%);
+  }
+}
+
+/* Tiny screen optimizations */
+.tiny-screen .glass-card {
+  padding: 0.6rem 0.4rem;
+}
+
+.tiny-screen .palette-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+
+.tiny-screen .palette-options {
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.tiny-screen .option-section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.tiny-screen .type-selector {
+  gap: 0.4rem;
+}
+
+.tiny-screen .type-option {
+  padding: 0.4rem;
+  min-height: 55px;
+  flex-direction: column;
+  text-align: center;
+}
+
+.tiny-screen .type-icon {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 0.2rem;
+}
+
+.tiny-screen .type-details h4 {
+  font-size: 0.75rem;
+  margin-bottom: 0.1rem;
+}
+
+.tiny-screen .type-details p {
+  display: none;
+}
+
+.tiny-screen .color-picker-wrapper {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.6rem;
+}
+
+.tiny-screen .color-picker {
+  width: 45px;
+  height: 45px;
+}
+
+.tiny-screen .color-value {
+  font-size: 0.8rem;
+}
+
+.tiny-screen .random-base-btn {
+  width: 28px;
+  height: 28px;
+}
+
+.tiny-screen .colors-display {
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+}
+
+.tiny-screen .colors-display.loading {
+  min-height: 150px;
+}
+
+.tiny-screen .loading-overlay {
+  backdrop-filter: blur(3px);
+}
+
+.tiny-screen .loading-spinner {
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+}
+
+.tiny-screen .loading-overlay p {
+  font-size: 0.8rem;
+  margin-top: 0.75rem;
+}
+
+.tiny-screen .color-card {
+  height: 65px;
+}
+
+.tiny-screen .color-info {
+  padding: 0.3rem;
+}
+
+.tiny-screen .color-hex {
+  font-size: 0.75rem;
+  margin-bottom: 0.1rem;
+}
+
+.tiny-screen .color-rgb {
+  font-size: 0.65rem;
+  display: block;
+}
+
+.tiny-screen .touch-hint {
+  font-size: 0.6rem;
+}
+
+.tiny-screen .generate-btn,
+.tiny-screen .save-btn {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.tiny-screen .palette-name-input {
+  padding: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.tiny-screen .palette-actions {
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.tiny-screen .btn-icon {
+  font-size: 1rem;
+}
+
+.tiny-screen .btn-icon.small {
+  font-size: 0.8rem;
+}
+
+/* Optimize saved palettes for tiny screens */
+.tiny-screen .saved-palettes-section {
+  margin-top: 1rem;
+}
+
+.tiny-screen .toggle-saved-btn {
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.tiny-screen .saved-palettes {
+  max-height: 350px;
+}
+
+.tiny-screen .saved-palette-item {
+  padding: 0.5rem 0.4rem;
+}
+
+.tiny-screen .palette-header h4 {
+  font-size: 0.85rem;
+}
+
+.tiny-screen .palette-date {
+  font-size: 0.7rem;
+}
+
+.tiny-screen .palette-preview {
+  height: 25px;
+  margin-bottom: 0.5rem;
+}
+
+.tiny-screen .load-palette-btn,
+.tiny-screen .delete-palette-btn {
+  padding: 0.4rem 0.25rem;
+  font-size: 0.75rem;
+  min-height: 35px;
+}

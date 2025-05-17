@@ -1,0 +1,109 @@
+<div class="name-generator-container">
+  <div class="glass-card">
+    <div class="theme-selector">
+      <h3>Select a Name Theme</h3>
+      <div class="theme-cards">
+        @for (theme of themes; track theme.id) {
+          <div class="theme-option"
+               [class.selected]="selectedTheme?.id === theme.id"
+               (click)="selectTheme(theme)">            <div class="theme-icon" [ngClass]="theme.id">
+              <div class="icon-symbol">
+                @switch(theme.id) {
+                  @case('fantasy') { ✨ }
+                  @case('scifi') { 🚀 }
+                  @case('cyberpunk') { 🤖 }
+                  @case('historical') { 📜 }
+                  @case('superhero') { 🦸 }
+                  @default { 🔮 }
+                }
+              </div>
+            </div>
+            <div class="theme-details">
+              <h4>{{ theme.name }}</h4>
+              <p>{{ theme.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>    @if (selectedTheme) {
+      <div class="name-result">
+        <h2>{{ selectedTheme.name }} Name</h2>
+        
+        @if (generatedName) {
+          <div class="name-display">
+            <span class="name-text">{{ generatedName.firstName }} {{ generatedName.lastName }}</span>
+          </div>
+        } @else {
+          <div class="name-display empty">
+            <span class="name-placeholder">Click generate to create a name</span>
+          </div>
+        }
+      </div>
+    }
+        <div class="name-actions">        <button class="generate-btn" (click)="generateNewName()">
+          <span class="btn-icon">🔄</span>
+          Generate Name
+        </button>
+        
+        <button class="copy-btn" 
+                [disabled]="!generatedName" 
+                (click)="copyToClipboard()"
+                [class.disabled]="!generatedName">
+          <span class="btn-icon">📋</span>
+          Copy
+        </button>
+        
+        <button class="favorite-btn" 
+                [disabled]="!generatedName" 
+                (click)="addToFavorites()"
+                [class.disabled]="!generatedName">
+          <span class="btn-icon">⭐</span>
+          Favorite
+        </button>
+        
+        <button class="favorites-list-btn" 
+                (click)="toggleFavorites()">
+          <span class="btn-icon">{{ showFavorites ? '▼' : '▶' }}</span>
+          {{ favoriteNames.length }} Favorites
+        </button>
+      </div>
+        @if (copySuccess) {
+        <div class="notification copy-notification" [@fadeInOut]>
+          Copied to clipboard!
+        </div>
+      }
+      
+      @if (favoriteSuccess) {
+        <div class="notification favorite-notification" [@fadeInOut]>
+          Added to favorites!
+        </div>
+      }
+      
+      @if (showFavorites) {
+        <div class="favorites-panel" [@expandCollapse]>
+        <h3>Saved Names</h3>
+        @if (favoriteNames.length > 0) {
+          <div class="favorites-list">            @for (name of favoriteNames; track name; let i = $index) {
+              <div class="favorite-item">
+                <div class="favorite-name">
+                  <span class="favorite-theme-badge" [attr.title]="getThemeName(name.theme)">{{ name.theme }}</span>
+                  <span class="fav-name-text">{{ name.firstName }} {{ name.lastName }}</span>
+                </div>
+              <div class="favorite-actions">                <button class="fav-copy-btn" (click)="copyNameToClipboard(name)">
+                  <span class="btn-icon small">📋</span>
+                </button>
+                <button class="fav-delete-btn" (click)="removeFavorite(i)">
+                  <span class="btn-icon small">🗑️</span>
+                </button>              </div>
+            </div>
+          }
+          </div>
+        } @else {
+          <div class="no-favorites">
+            No favorite names saved yet. Click the star icon to save names you like.
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

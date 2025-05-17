@@ -1,0 +1,176 @@
+<div class="ascii-art-container">
+  <!-- Header section with title and filter controls -->
+  <div class="ascii-header">
+    <h2 class="ascii-title">ASCII Art Gallery</h2>
+    
+    <div class="filter-controls">
+      <div class="search-filter">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="filterArt()"
+          placeholder="Search by title..." 
+          class="search-input"
+          aria-label="Search art">
+        <span class="search-icon">🔍</span>
+      </div>
+      
+      <div class="category-filter">
+        <select 
+          [(ngModel)]="selectedCategory" 
+          (change)="filterArt()" 
+          class="category-select"
+          aria-label="Filter by category">
+          <option value="">All Categories</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+      </div>
+      
+      <div class="view-mode-switch">
+        <button 
+          (click)="viewMode = 'grid'" 
+          [class.active]="viewMode === 'grid'"
+          aria-label="Grid view">
+          <span class="view-icon">⊞</span>
+        </button>
+        <button 
+          (click)="viewMode = 'list'" 
+          [class.active]="viewMode === 'list'"
+          aria-label="List view">
+          <span class="view-icon">≡</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toggle button to show/hide new art form -->
+  <button 
+    class="toggle-form-btn" 
+    (click)="showNewArtForm = !showNewArtForm">
+    <span>{{ showNewArtForm ? 'Cancel' : 'Create New ASCII Art' }}</span>
+    <span class="btn-icon">{{ showNewArtForm ? '✕' : '✎' }}</span>
+  </button>
+  
+  <!-- New ASCII Art Form -->
+  @if (showNewArtForm) {
+    <div class="new-art-form" [@fadeInOut]>
+      <h3>Create New ASCII Art</h3>
+      
+      <div class="form-group">
+        <label for="artTitle">Title</label>
+        <input 
+          type="text" 
+          id="artTitle" 
+          [(ngModel)]="newArt.title" 
+          placeholder="Enter a title" 
+          class="form-input">
+      </div>
+      
+      <div class="form-group">
+        <label for="artCategory">Category</label>
+        <div class="category-input">
+          <input 
+            type="text" 
+            id="artCategory" 
+            [(ngModel)]="newArt.category" 
+            placeholder="Enter a category" 
+            class="form-input">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="artContent">ASCII Art Content</label>
+        <div class="content-editor">
+          <div class="editor-tools">
+            <span class="tool-tip">Use monospace font and spaces to create your art</span>
+          </div>
+          <textarea 
+            id="artContent" 
+            [(ngModel)]="newArt.content" 
+            placeholder="Create your ASCII art here..." 
+            class="art-textarea"
+            rows="10"></textarea>
+        </div>
+      </div>
+      
+      <div class="preview-section">
+        <h4>Preview</h4>
+        <div class="ascii-preview">
+          <pre>{{ newArt.content || 'Your art will appear here...' }}</pre>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button 
+          class="save-btn" 
+          (click)="saveNewArt()" 
+          [disabled]="!newArt.title || !newArt.content || !newArt.category">
+          Save Art
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- ASCII Art Gallery -->
+  <div class="ascii-gallery" [class.grid-view]="viewMode === 'grid'" [class.list-view]="viewMode === 'list'">
+    @if (filteredArt.length === 0) {
+      <div class="no-results">
+        <p>No ASCII art found. Try adjusting your filters or create new art.</p>
+      </div>
+    }
+    
+    @for (art of filteredArt; track art.id) {
+      <div class="art-card" [class.expanded]="expandedArtId === art.id">
+        <div class="art-header">
+          <h3>{{ art.title }}</h3>
+          <div class="art-actions">
+            <button 
+              class="favorite-btn" 
+              (click)="toggleFavorite(art.id)" 
+              [class.favorited]="art.favorite"
+              aria-label="Toggle favorite">
+              <span class="btn-icon">{{ art.favorite ? '★' : '☆' }}</span>
+            </button>
+            <button 
+              class="expand-btn" 
+              (click)="toggleExpand(art.id)"
+              aria-label="Expand art">
+              <span class="btn-icon">{{ expandedArtId === art.id ? '↑' : '↓' }}</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="art-content">
+          <pre>{{ art.content }}</pre>
+        </div>
+        
+        <div class="art-footer">
+          <span class="art-category">{{ art.category }}</span>
+          <span class="art-date">{{ formatDate(art.date) }}</span>
+          <div class="art-footer-actions">
+            <button 
+              class="copy-btn" 
+              (click)="copyArt(art.content, art.id)"
+              aria-label="Copy art">
+              <span class="btn-icon">📋</span>
+            </button>
+            <button 
+              class="delete-btn" 
+              (click)="deleteArt(art.id)"
+              aria-label="Delete art">
+              <span class="btn-icon">🗑️</span>
+            </button>
+          </div>
+        </div>
+        
+        @if (copiedArtId === art.id) {
+          <div class="copied-indicator" [@fadeInOut]>
+            Copied to clipboard!
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

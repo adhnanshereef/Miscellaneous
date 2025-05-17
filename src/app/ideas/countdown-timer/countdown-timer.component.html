@@ -1,0 +1,200 @@
+<div class="countdown-container" appCursorEffect>
+  <!-- Header and controls -->
+  <div class="countdown-header" appCursorEffect>
+    <h2 class="countdown-title">Countdown Timer</h2>
+    
+    <!-- View mode toggle -->
+    <div class="view-controls">
+      <button 
+        class="view-toggle" 
+        [class.active]="viewMode === 'grid'" 
+        (click)="setViewMode('grid')"
+        aria-label="Grid view">
+        <span class="view-icon">⊞</span>
+      </button>
+      <button 
+        class="view-toggle" 
+        [class.active]="viewMode === 'list'" 
+        (click)="setViewMode('list')"
+        aria-label="List view">
+        <span class="view-icon">≡</span>
+      </button>
+    </div>
+  </div>
+    <!-- Create new timer button -->
+  <button class="new-timer-btn" (click)="showNewTimerForm = !showNewTimerForm" appCursorEffect>
+    @if (!showNewTimerForm) {
+      <span>Create New Countdown</span>
+    } @else {
+      <span>Cancel</span>
+    }
+  </button>
+  
+  <!-- New timer form -->
+  @if (showNewTimerForm) {
+    <div class="timer-form" [@fadeInOut]>
+      <h3>Create New Countdown</h3>
+      
+      <div class="form-group">
+        <label for="timerTitle">Title</label>
+        <input 
+          type="text" 
+          id="timerTitle" 
+          [(ngModel)]="newTimer.title" 
+          placeholder="Enter a title for your countdown" 
+          class="form-input">
+      </div>
+      
+      <div class="form-group">
+        <label for="timerDate">Target Date</label>
+        <input 
+          type="datetime-local" 
+          id="timerDate" 
+          [(ngModel)]="newTimer.targetDate" 
+          class="form-input"
+          [min]="minDate">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="timerColor">Color</label>
+          <div class="color-selector">
+            <input 
+              type="color" 
+              id="timerColor" 
+              [(ngModel)]="newTimer.color" 
+              class="color-input">
+            <span class="color-preview" [style.background-color]="newTimer.color"></span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="timerSound">Notification Sound</label>
+          <select 
+            id="timerSound" 
+            [(ngModel)]="newTimer.sound" 
+            class="form-select">
+            @for (sound of availableSounds; track sound.id) {
+              <option [value]="sound.id">
+                {{ sound.name }}
+              </option>
+            }
+          </select>          @if (newTimer.sound && newTimer.sound !== 'none') {
+            <button 
+              class="preview-sound-btn" 
+              (click)="previewSound(newTimer.sound)"
+              [disabled]="isSoundPlaying"
+              aria-label="Preview sound">
+              <span class="btn-icon">🔊</span>
+            </button>
+          }
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button 
+          class="create-timer-btn" 
+          (click)="createTimer()" 
+          [disabled]="!isValidTimer(newTimer)">
+          Create Timer
+        </button>
+      </div>
+    </div>
+  }
+    <!-- Timer display -->
+  <div class="timers-container" [class.grid-view]="viewMode === 'grid'" [class.list-view]="viewMode === 'list'" appCursorEffect>
+    <!-- No timers message -->
+    @if (timers.length === 0) {
+      <div class="no-timers">
+        <p>No countdowns yet. Create one to get started!</p>
+      </div>
+    }
+    
+    <!-- Timer cards -->    @for (timer of timers; track timer.id) {
+      <div 
+        class="timer-card"
+        [class.complete]="timer.isComplete" 
+        [class.inactive]="!timer.isActive"
+        [style.--timer-color]="timer.color"
+        appCursorEffect>
+        <div class="timer-card-header">
+          <h3>{{ timer.title }}</h3>
+          <div class="timer-actions">
+            <button 
+              class="timer-action-btn toggle-btn" 
+              (click)="toggleTimer(timer.id)" 
+              aria-label="Toggle timer">
+              <span class="btn-icon">{{ timer.isActive ? '⏸' : '▶' }}</span>
+            </button>
+            <button 
+              class="timer-action-btn delete-btn" 
+              (click)="deleteTimer(timer.id)" 
+              aria-label="Delete timer">
+              <span class="btn-icon">🗑️</span>
+            </button>
+          </div>
+        </div>
+          <div class="timer-target">
+          <span class="target-label">Target Date:</span>
+          <span class="target-date">{{ formatDate(timer.targetDate) }}</span>
+        </div>
+        
+        @if (timerStates[timer.id]) {
+          @let state = timerStates[timer.id];
+          <div class="timer-display">
+            <div class="time-blocks">
+              <div class="time-block days">
+                <div class="time-value">{{ state.days }}</div>
+                <div class="time-label">Days</div>
+              </div>
+              <div class="time-block hours">
+                <div class="time-value">{{ state.hours }}</div>
+                <div class="time-label">Hours</div>
+              </div>
+              <div class="time-block minutes">
+                <div class="time-value">{{ state.minutes }}</div>
+                <div class="time-label">Minutes</div>
+              </div>
+              <div class="time-block seconds">
+                <div class="time-value">{{ state.seconds }}</div>
+                <div class="time-label">Seconds</div>
+              </div>
+            </div>
+            
+            <div class="timer-progress">
+              <div class="progress-bar" [style.width.%]="calculateProgress(timer)"></div>
+            </div>
+            
+            <div class="timer-status">
+              @if (timer.isComplete) {
+                <span>Completed!</span>
+              } @else if (timer.isActive) {
+                <span>Active</span>
+              } @else {
+                <span>Paused</span>
+              }
+            </div>
+          </div>
+        }
+        
+        <div class="timer-card-footer">
+          <button 
+            class="reset-timer-btn" 
+            (click)="resetTimer(timer.id)"
+            [disabled]="!timer.isComplete && timer.isActive">
+            <span class="btn-icon">🔄</span> Reset
+          </button>
+          
+          <div class="timer-meta">
+            @if (timer.sound !== 'none') {
+              <span class="sound-indicator">
+                <span class="indicator-icon">🔊</span> 
+                {{ getSoundName(timer.sound) }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
