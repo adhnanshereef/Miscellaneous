@@ -1,0 +1,151 @@
+<div class="color-palette-container" [class.tiny-screen]="isTinyScreen">
+  <div class="glass-card">
+    <h2 class="palette-title">Colors Palette Maker</h2>
+    
+    <!-- Palette Type Selector -->
+    <div class="palette-options">
+      <div class="option-section">
+        <h3>Palette Type</h3>        <div class="type-selector">
+          @for (type of paletteTypes; track type.id) {
+            <div class="type-option" 
+                 [class.selected]="selectedType === type.id"
+                 (click)="selectPaletteType(type.id)">
+              <div class="type-icon" [ngClass]="type.id"></div>
+              <div class="type-details">
+                <h4>{{ type.name }}</h4>
+                <p>{{ type.description }}</p>
+              </div>
+            </div>
+          }
+        </div>      </div>      <!-- Base Color Selector -->      @if(selectedType !== 'random') {
+        <div class="option-section">
+          <h3>Base Color</h3>
+          <div class="color-picker-wrapper">
+            <input type="color" 
+                  [value]="baseColor" 
+                  (change)="onBaseColorChange($event)" 
+                  class="color-picker"
+                  aria-label="Select base color">
+            <span class="color-value">{{ baseColor || 'Choose a color' }}</span>
+            @if (isMobile) {
+              <button class="random-base-btn" (click)="randomizeBaseColor()" aria-label="Random color">
+                <span class="btn-icon small">🔀</span>
+              </button>
+            }
+          </div>
+            <!-- Color Wheel -->
+          <div class="color-wheel-container" [class.mobile]="isMobile" [class.tiny]="isTinyScreen">
+            <app-color-wheel 
+              [baseColor]="baseColor" 
+              [paletteType]="selectedType"
+              [colors]="paletteHexColors">
+            </app-color-wheel>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Generated Palette Display -->
+    <div class="generated-palette">
+      <div class="palette-actions">
+        <button class="generate-btn" (click)="generateNewPalette()">
+          <span class="btn-icon">🔄</span>
+          Generate New Palette
+        </button>
+        
+        <div class="save-palette-section">
+          <input type="text" 
+                 [(ngModel)]="paletteName" 
+                 placeholder="Name your palette" 
+                 class="palette-name-input">
+          <button class="save-btn" 
+                  (click)="savePalette()" 
+                  [disabled]="!currentPalette.length">
+            <span class="btn-icon">💾</span>
+            Save Palette
+          </button>
+        </div>      </div>      <!-- Colors Display -->
+      <div class="colors-display" [class.loading]="isLoading">
+        @if (isLoading) {
+          <div class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <p>Generating palette...</p>
+          </div>
+        }
+        @for (color of currentPalette; track color.hex; let i = $index) {
+          <div class="color-card" 
+               [style.background-color]="color.hex"
+               [attr.aria-label]="'Copy color ' + color.hex"
+               (click)="copyColor(color, i)"
+               (touchstart)="handleTouchStart($event)"
+               (touchend)="handleTouchEnd($event, color, i)">
+            <div class="color-info" [class.light-text]="isLightText(color.hex)">
+              <span class="color-hex">{{ color.hex }}</span>
+              <span class="color-rgb">{{ color.rgb }}</span>
+              @if (isMobile) {
+                <span class="touch-hint" [class.light-text]="isLightText(color.hex)">
+                  Tap to copy
+                </span>
+              }
+            </div>            @if (copySuccess && activeColorIndex === i) {
+              <div class="copy-indicator" [@fadeInOut]="{ value: '', params: { duration: isMobile ? 200 : 300 } }">
+                Copied!
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>    <!-- Notification for save -->    @if (saveSuccess) {
+      <div class="notification save-notification" [@fadeInOut]="{ value: '', params: { duration: isMobile ? 200 : 300 } }">
+        Palette saved successfully!
+      </div>
+    }<!-- Saved Palettes Section -->
+    <div class="saved-palettes-section">
+      <button class="toggle-saved-btn" (click)="toggleSavedPalettes()" >
+        <span class="btn-icon">{{ showSavedPalettes ? '▼' : '▶' }}</span>
+        {{ savedPalettes.length }} Saved Palettes
+      </button>      @if (showSavedPalettes) {
+        <div class="saved-palettes" [@expandCollapse]="{ value: '', params: { duration: isMobile ? 200 : 300 } }">
+          @if (savedPalettes.length > 0) {
+            <div class="palettes-list" [class.mobile-view]="isMobile">
+              @for (palette of savedPalettes; track palette.id) {
+                <div class="saved-palette-item" (touchstart)="handleTouchStart($event)" [id]="'palette-' + palette.id">
+                  <div class="palette-header">
+                    <h4>{{ palette.name }}</h4>
+                    <span class="palette-date">{{ formatDate(palette.createdAt) }}</span>
+                  </div>
+                  
+                  <div class="palette-preview" (click)="loadPalette(palette)">
+                    @for (color of palette.colors; track color.hex) {
+                      <div class="preview-color" [style.background-color]="color.hex"></div>
+                    }
+                    @if (isMobile) {
+                      <div class="preview-overlay">
+                        <span class="preview-hint">Tap to load</span>
+                      </div>
+                    }
+                  </div>
+                  
+                  <div class="palette-actions">
+                    <button class="load-palette-btn" (click)="loadPalette(palette)" aria-label="Load palette">
+                      <span class="btn-icon small">↑</span>
+                      Load
+                    </button>
+                    <button class="delete-palette-btn" (click)="deletePalette(palette.id)" aria-label="Delete palette">
+                      <span class="btn-icon small">🗑️</span>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="no-saved-palettes">
+              No palettes saved yet. Generate a palette and save it to see it here.
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

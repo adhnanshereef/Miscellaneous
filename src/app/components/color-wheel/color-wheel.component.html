@@ -1,0 +1,35 @@
+<div class="color-wheel-container" appCursorEffect>
+  <canvas #colorWheel class="color-wheel-canvas"></canvas>  <div class="wheel-explanation">
+    <h4>Color Harmony Visualizer</h4>
+    @if (paletteType === 'monochromatic') {
+      <p>
+        Monochromatic colors are different shades of a single hue.
+      </p>
+    }
+    @if (paletteType === 'complementary') {
+      <p>
+        Complementary colors are opposite to each other on the color wheel.
+      </p>
+    }
+    @if (paletteType === 'analogous') {
+      <p>
+        Analogous colors are adjacent to each other on the color wheel.
+      </p>
+    }
+    @if (paletteType === 'triadic') {
+      <p>
+        Triadic colors are evenly spaced around the color wheel (120° apart).
+      </p>
+    }
+    @if (paletteType === 'tetradic') {
+      <p>
+        Tetradic colors form a rectangle on the color wheel (90° apart).
+      </p>
+    }
+    @if (paletteType === 'random') {
+      <p>
+        Random colors don't follow a specific harmony rule.
+      </p>
+    }
+  </div>
+</div>

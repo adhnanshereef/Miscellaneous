@@ -1,0 +1,146 @@
+.quote-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  padding: 2rem;
+  width: 100%;
+}
+
+.glass-card {
+  background: rgba(30, 30, 40, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 500px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+}
+
+.quote-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.quote-icon {
+  margin-bottom: 1.5rem;
+  color: #a78bfa;
+}
+
+.quote-text {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.quote-author {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  font-style: italic;
+  align-self: flex-end;
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.generate-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%);
+  transform: scale(1.02);
+}
+
+.generate-btn:active {
+  transform: scale(0.98);
+}
+
+/* Responsive styles for quote generator */
+@media (max-width: 768px) {
+  .quote-container {
+    padding: 1.5rem;
+    min-height: 250px;
+  }
+
+  .glass-card {
+    padding: 1.5rem;
+  }
+
+  .quote-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .quote-author {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quote-container {
+    padding: 10px;
+    min-height: 200px;
+  }
+
+  .glass-card {
+    padding: 0.8rem;
+  }
+
+  .quote-icon {
+    margin-bottom: 1.2rem;
+  }
+
+  .quote-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .quote-author {
+    font-size: 0.95rem;
+  }
+
+  .generate-btn {
+    padding: 0.6rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .quote-container {
+    padding: 1px;
+    min-height: 180px;
+  }
+  .quote-text {
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
+  .quote-author {
+    font-size: 0.9rem;
+  }
+
+  .generate-btn {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Generator for Countdown Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    button {
+      background-color: #6a11cb;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #5a0db3;
+    }
+    
+    .sound-row {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+    
+    .sound-row button {
+      margin-right: 10px;
+    }
+    
+    a {
+      text-decoration: none;
+      color: #2575fc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sound Generator for Countdown Timer</h1>
+  <p>This page generates notification sounds for the Countdown Timer component. Click on each sound to preview, then download them to the <code>src/assets/sounds</code> directory.</p>
+  
+  <div class="sound-row">
+    <button onclick="playSound('bell')">Preview Bell</button>
+    <a id="bell-download">Download bell.mp3</a>
+  </div>
+  
+  <div class="sound-row">
+    <button onclick="playSound('chime')">Preview Chime</button>
+    <a id="chime-download">Download chime.mp3</a>
+  </div>
+  
+  <div class="sound-row">
+    <button onclick="playSound('digital')">Preview Digital</button>
+    <a id="digital-download">Download digital.mp3</a>
+  </div>
+  
+  <div class="sound-row">
+    <button onclick="playSound('gentle')">Preview Gentle</button>
+    <a id="gentle-download">Download gentle.mp3</a>
+  </div>
+  
+  <script>
+    // Sound generation functions
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let currentSound = null;
+    
+    // Generate bell sound (a simple bell-like tone)
+    function createBellSound() {
+      const duration = 1.0;
+      const buffer = audioContext.createBuffer(
+        1, 
+        audioContext.sampleRate * duration, 
+        audioContext.sampleRate
+      );
+      
+      const data = buffer.getChannelData(0);
+      
+      for (let i = 0; i < buffer.length; i++) {
+        // Bell-like decay
+        const t = i / audioContext.sampleRate;
+        data[i] = Math.sin(2 * Math.PI * 880 * t) * Math.exp(-3 * t);
+        
+        // Add harmonic
+        data[i] += 0.5 * Math.sin(2 * Math.PI * 440 * t) * Math.exp(-4 * t);
+      }
+      
+      return buffer;
+    }
+    
+    // Generate chime sound (ascending tones)
+    function createChimeSound() {
+      const duration = 1.0;
+      const buffer = audioContext.createBuffer(
+        1, 
+        audioContext.sampleRate * duration, 
+        audioContext.sampleRate
+      );
+      
+      const data = buffer.getChannelData(0);
+      const frequencies = [523.25, 659.25, 783.99];
+      
+      for (let i = 0; i < buffer.length; i++) {
+        const t = i / audioContext.sampleRate;
+        let sampleValue = 0;
+        
+        // Create 3 ascending tones
+        if (t < 0.33) {
+          sampleValue = Math.sin(2 * Math.PI * frequencies[0] * t) * (1 - t * 3);
+        } else if (t < 0.66) {
+          sampleValue = Math.sin(2 * Math.PI * frequencies[1] * t) * (1 - (t - 0.33) * 3);
+        } else {
+          sampleValue = Math.sin(2 * Math.PI * frequencies[2] * t) * (1 - (t - 0.66) * 3);
+        }
+        
+        data[i] = sampleValue * 0.5; // Reduce volume
+      }
+      
+      return buffer;
+    }
+    
+    // Generate digital sound (electronic beep)
+    function createDigitalSound() {
+      const duration = 0.4;
+      const buffer = audioContext.createBuffer(
+        1, 
+        audioContext.sampleRate * duration, 
+        audioContext.sampleRate
+      );
+      
+      const data = buffer.getChannelData(0);
+      
+      for (let i = 0; i < buffer.length; i++) {
+        const t = i / audioContext.sampleRate;
+        
+        // First part: high tone
+        if (t < 0.1) {
+          data[i] = Math.sin(2 * Math.PI * 1000 * t) * 0.5;
+        } 
+        // Pause
+        else if (t < 0.15) {
+          data[i] = 0;
+        }
+        // Second part: middle tone
+        else if (t < 0.25) {
+          data[i] = Math.sin(2 * Math.PI * 800 * t) * 0.5;
+        }
+        // Pause
+        else if (t < 0.3) {
+          data[i] = 0;
+        }
+        // Third part: high tone again
+        else {
+          data[i] = Math.sin(2 * Math.PI * 1200 * t) * 0.5 * (1 - (t - 0.3) / 0.1);
+        }
+      }
+      
+      return buffer;
+    }
+    
+    // Generate gentle sound (soft notification)
+    function createGentleSound() {
+      const duration = 0.8;
+      const buffer = audioContext.createBuffer(
+        1, 
+        audioContext.sampleRate * duration, 
+        audioContext.sampleRate
+      );
+      
+      const data = buffer.getChannelData(0);
+      
+      for (let i = 0; i < buffer.length; i++) {
+        const t = i / audioContext.sampleRate;
+        
+        // Soft fade in and out
+        let envelope = 1;
+        if (t < 0.2) {
+          envelope = t / 0.2; // Fade in
+        } else if (t > 0.6) {
+          envelope = (1 - (t - 0.6) / 0.2); // Fade out
+        }
+        
+        data[i] = Math.sin(2 * Math.PI * 392 * t) * envelope * 0.4;
+      }
+      
+      return buffer;
+    }
+    
+    // Sound mapping
+    const soundGenerators = {
+      bell: createBellSound,
+      chime: createChimeSound,
+      digital: createDigitalSound,
+      gentle: createGentleSound
+    };
+    
+    // Play the selected sound
+    function playSound(soundType) {
+      if (currentSound) {
+        currentSound.stop();
+      }
+      
+      const soundBuffer = soundGenerators[soundType]();
+      const source = audioContext.createBufferSource();
+      source.buffer = soundBuffer;
+      source.connect(audioContext.destination);
+      source.start();
+      
+      currentSound = source;
+      
+      // Also prepare the download link
+      prepareDownload(soundType, soundBuffer);
+    }
+    
+    // Create a downloadable WAV file
+    function prepareDownload(soundType, buffer) {
+      const downloadLink = document.getElementById(`${soundType}-download`);
+      
+      // Convert AudioBuffer to WAV
+      const wav = toWav(buffer);
+      const blob = new Blob([wav], { type: 'audio/wav' });
+      
+      const url = URL.createObjectURL(blob);
+      downloadLink.href = url;
+      downloadLink.download = `${soundType}.mp3`;
+    }
+    
+    // Convert AudioBuffer to WAV format
+    function toWav(buffer) {
+      const numOfChannels = buffer.numberOfChannels;
+      const length = buffer.length * numOfChannels * 2;
+      const out = new ArrayBuffer(44 + length);
+      const view = new DataView(out);
+      const channels = [];
+      let offset = 0;
+      let pos = 0;
+      
+      // Get channels
+      for (let i = 0; i < numOfChannels; i++) {
+        channels.push(buffer.getChannelData(i));
+      }
+      
+      // Write WAV header
+      setUint32(0x46464952);                         // "RIFF"
+      setUint32(length + 36);                        // Length
+      setUint32(0x45564157);                         // "WAVE"
+      setUint32(0x20746d66);                         // "fmt "
+      setUint32(16);                                 // Length
+      setUint16(1);                                  // PCM Format
+      setUint16(numOfChannels);                      // Number of channels
+      setUint32(buffer.sampleRate);                  // Sample rate
+      setUint32(buffer.sampleRate * 2 * numOfChannels); // Byte rate
+      setUint16(numOfChannels * 2);                  // Block align
+      setUint16(16);                                 // Bits per sample
+      setUint32(0x61746164);                         // "data"
+      setUint32(length);                             // Data length
+      
+      // Write interleaved data
+      for (let i = 0; i < buffer.length; i++) {
+        for (let c = 0; c < numOfChannels; c++) {
+          const sample = Math.max(-1, Math.min(1, channels[c][i]));
+          let val = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+          setInt16(val);
+        }
+      }
+      
+      return out;
+      
+      function setUint32(data) {
+        view.setUint32(pos, data, true);
+        pos += 4;
+      }
+      
+      function setUint16(data) {
+        view.setUint16(pos, data, true);
+        pos += 2;
+      }
+      
+      function setInt16(data) {
+        view.setInt16(pos, data, true);
+        pos += 2;
+      }
+    }
+    
+    // Initialize download links
+    document.addEventListener('DOMContentLoaded', function() {
+      // Generate each sound and prepare download links
+      Object.keys(soundGenerators).forEach(soundType => {
+        const buffer = soundGenerators[soundType]();
+        prepareDownload(soundType, buffer);
+      });
+    });
+  </script>
+</body>
+</html>
