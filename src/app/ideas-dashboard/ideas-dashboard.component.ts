@@ -8,6 +8,8 @@ import { CountdownTimerComponent } from '../ideas/countdown-timer/countdown-time
 import { DailyTriviaComponent } from '../ideas/daily-trivia/daily-trivia.component';
 import { LightingVisualizerComponent } from '../ideas/lighting-visualizer/lighting-visualizer.component';
 import { PeriodicTableComponent } from '../ideas/periodic-table/periodic-table.component';
+import { DataRandomizerVisualizerComponent } from '../ideas/data-randomizer-visualizer/data-randomizer-visualizer.component';
+import { InteractiveSoundboardComponent } from '../ideas/interactive-soundboard/interactive-soundboard.component';
 import { CursorEffectDirective } from './cursor-effect.directive';
 
 interface HackathonIdea {
@@ -20,7 +22,20 @@ interface HackathonIdea {
 
 @Component({  selector: 'app-ideas-dashboard',
   standalone: true,
-  imports: [CommonModule, QuoteGeneratorComponent, NameGeneratorComponent, ColorPaletteMakerComponent, AsciiArtViewerComponent, CountdownTimerComponent, DailyTriviaComponent, LightingVisualizerComponent, PeriodicTableComponent, CursorEffectDirective],
+  imports: [
+    CommonModule,
+    QuoteGeneratorComponent,
+    NameGeneratorComponent,
+    ColorPaletteMakerComponent,
+    AsciiArtViewerComponent,
+    CountdownTimerComponent,
+    DailyTriviaComponent,
+    LightingVisualizerComponent,
+    PeriodicTableComponent,
+    DataRandomizerVisualizerComponent,
+    InteractiveSoundboardComponent,
+    CursorEffectDirective
+  ],
   templateUrl: './ideas-dashboard.component.html',
   styleUrl: './ideas-dashboard.component.css'
 })
@@ -67,24 +82,24 @@ export class IdeasDashboardComponent {
       description: 'Adjust sliders to change the time and brightness of your lighting theme.',
       isImplemented: true,
       component: LightingVisualizerComponent
-    },
-    {
+    },    {
       id: 'soundboard',
       title: 'Interactive Soundboard',
       description: 'Play sounds with hotkeys and see visual waveform representations.',
-      isImplemented: false
-    },    {
+      isImplemented: true,
+      component: InteractiveSoundboardComponent
+    },{
       id: 'periodic-table',
       title: 'Interactive Periodic Table',
       description: 'Explore elements with detailed information on hover and smart filtering.',
       isImplemented: true,
       component: PeriodicTableComponent
-    },
-    {
+    },    {
       id: 'data-randomizer',
       title: 'Data Randomizer Visualizer',
       description: 'Generate random data and visualize it as pie charts, bar graphs, or lists.',
-      isImplemented: false
+      isImplemented: true,
+      component: DataRandomizerVisualizerComponent
     }
   ];
   

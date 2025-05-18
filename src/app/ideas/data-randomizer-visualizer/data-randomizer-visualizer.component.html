@@ -1,0 +1,194 @@
+<div class="randomizer-container" appCursorEffect>
+  <div class="randomizer-header">
+    <h2 class="randomizer-title">Data Randomizer & Visualizer</h2>
+    <div class="view-options">
+      <button 
+        class="view-toggle" 
+        [class.active]="viewMode === 'pie'"
+        (click)="setViewMode('pie')"
+        appCursorEffect
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+          <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+        </svg>
+        Pie Chart
+      </button>
+      
+      <button 
+        class="view-toggle" 
+        [class.active]="viewMode === 'bar'"
+        (click)="setViewMode('bar')"
+        appCursorEffect
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+          <line x1="2" y1="20" x2="22" y2="20"></line>
+        </svg>
+        Bar Chart
+      </button>
+      
+      <button 
+        class="view-toggle" 
+        [class.active]="viewMode === 'list'"
+        (click)="setViewMode('list')"
+        appCursorEffect
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        List View
+      </button>
+    </div>
+  </div>
+
+  <div class="randomizer-main">
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+      <div class="control-group">
+        <label for="dataCount">Number of Data Points</label>
+        <div class="range-input-container">
+          <input 
+            type="range" 
+            id="dataCount" 
+            [(ngModel)]="dataCount" 
+            min="2" 
+            max="15" 
+            (change)="onDataCountChange()"
+            appCursorEffect
+          />
+          <span class="range-value">{{ dataCount }}</span>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label>Value Range</label>
+        <div class="range-pair">
+          <div class="range-input-container">
+            <label for="minValue">Min</label>
+            <input 
+              type="number" 
+              id="minValue" 
+              [(ngModel)]="minValue" 
+              (change)="onValueRangeChange()"
+              appCursorEffect
+            />
+          </div>
+          <div class="range-input-container">
+            <label for="maxValue">Max</label>
+            <input 
+              type="number" 
+              id="maxValue" 
+              [(ngModel)]="maxValue" 
+              (change)="onValueRangeChange()"
+              appCursorEffect
+            />
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label for="dataShape">Distribution Shape</label>
+        <select 
+          id="dataShape" 
+          [(ngModel)]="dataShape" 
+          (change)="generateData()"
+          appCursorEffect
+        >
+          @for (shape of dataShapes; track shape.id) {
+            <option [value]="shape.id">{{ shape.name }}</option>
+          }
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label for="dataCategory">Data Category</label>
+        <select 
+          id="dataCategory" 
+          [(ngModel)]="dataCategory" 
+          (change)="generateData()"
+          appCursorEffect
+        >
+          @for (category of dataCategories; track category.id) {
+            <option [value]="category.id">{{ category.name }}</option>
+          }
+        </select>
+      </div>
+      
+      <div class="actions">
+        <button 
+          class="action-button primary" 
+          (click)="generateData()"
+          appCursorEffect
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          Generate New Data
+        </button>
+        
+        <button 
+          class="action-button secondary" 
+          (click)="exportToCSV()"
+          appCursorEffect
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export to CSV
+        </button>
+      </div>
+    </div>
+      <!-- Visualization Panel -->
+    <div class="visualization-panel">
+      <!-- Pie Chart View -->
+      <div class="chart-container pie-chart-container" [style.display]="viewMode === 'pie' ? 'flex' : 'none'" appCursorEffect>
+        <canvas #pieCanvas></canvas>
+      </div>
+      
+      <!-- Bar Chart View -->
+      <div class="chart-container bar-chart-container" [style.display]="viewMode === 'bar' ? 'flex' : 'none'" appCursorEffect>
+        <canvas #barCanvas></canvas>
+      </div>
+      
+      <!-- List View -->
+      @if (viewMode === 'list') {
+        <div class="list-container" appCursorEffect>
+          <div class="list-header">
+            <div class="header-item label">Label</div>
+            <div class="header-item value">Value</div>
+            <div class="header-item percentage">Percentage</div>
+          </div>
+          
+          @for (dataPoint of generatedData; track dataPoint.label) {
+            <div class="data-point">
+              <div class="point-color" [style.background-color]="dataPoint.color"></div>
+              <div class="point-label">{{ dataPoint.label }}</div>
+              <div class="point-value">{{ dataPoint.value.toLocaleString() }}</div>
+              <div class="point-percentage">{{ getPercentage(dataPoint.value) }}%</div>
+              <div class="point-bar" [style.width]="getPercentage(dataPoint.value) + '%'" [style.background-color]="dataPoint.color"></div>
+            </div>
+          }
+          
+          <div class="data-point total">
+            <div class="point-color"></div>
+            <div class="point-label">Total</div>
+            <div class="point-value">{{ getTotalValue().toLocaleString() }}</div>
+            <div class="point-percentage">100%</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
