@@ -100,9 +100,15 @@
             <app-color-palette-maker appCursorEffect></app-color-palette-maker>
           }          @case ('ascii-art') {
             <app-ascii-art-viewer appCursorEffect></app-ascii-art-viewer>
-          }
-          @case ('countdown-timer') {
+          }          @case ('countdown-timer') {
             <app-countdown-timer appCursorEffect></app-countdown-timer>
+          }          @case ('daily-trivia') {
+            <app-daily-trivia appCursorEffect></app-daily-trivia>
+          }          @case ('lighting-theme') {
+            <app-lighting-visualizer appCursorEffect></app-lighting-visualizer>
+          }
+          @case ('periodic-table') {
+            <app-periodic-table appCursorEffect></app-periodic-table>
           }
           @default {
             <!-- Future components will automatically have cursor effect -->

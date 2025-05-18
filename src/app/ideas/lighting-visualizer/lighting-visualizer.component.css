@@ -1,0 +1,533 @@
+.lighting-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  gap: 2rem;
+  cursor: none;
+}
+
+/* Header styles */
+.lighting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lighting-title {
+  font-size: 2.2rem;
+  background: linear-gradient(45deg, #8338EC, #3A86FF);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0;
+}
+
+/* Main content layout */
+.lighting-content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Fullscreen mode */
+.fullscreen .lighting-content {
+  grid-template-columns: 1fr;
+}
+
+.fullscreen .room-preview {
+  height: calc(100vh - 150px);
+}
+
+.fullscreen .controls-section {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  border-radius: 15px;
+  z-index: 10;
+}
+
+/* Theme selection section */
+.themes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.theme-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+  /* Custom scrollbar for theme cards */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131, 56, 236, 0.5) rgba(255, 255, 255, 0.1);
+}
+
+.theme-cards::-webkit-scrollbar {
+  width: 6px;
+}
+
+.theme-cards::-webkit-scrollbar-thumb {
+  background-color: rgba(131, 56, 236, 0.5);
+  border-radius: 6px;
+}
+
+.theme-cards::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.theme-card {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+}
+
+.theme-card:hover, .theme-card.active {
+  border-color: rgba(131, 56, 236, 0.5);
+  box-shadow: 0 0 15px rgba(131, 56, 236, 0.3);
+  transform: translateY(-2px);
+}
+
+.theme-card.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #8338EC, #3A86FF);
+}
+
+.theme-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.theme-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.theme-preview {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.color-preview {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.theme-description {
+  font-size: 0.9rem;
+  color: #adb5bd;
+  margin: 0;
+}
+
+/* Preview room section */
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.room-options {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.room-option {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  cursor: none;
+}
+
+.room-option.active {
+  background: rgba(131, 56, 236, 0.2);
+  border-color: rgba(131, 56, 236, 0.5);
+  box-shadow: 0 0 10px rgba(131, 56, 236, 0.2);
+}
+
+.room-preview {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-color: #121212;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Room furniture and items */
+.living-room {
+  background-image: url('https://images.unsplash.com/photo-1560448205-4d9b3e6bb6db?w=800&auto=format');
+  background-size: cover;
+  background-position: center;
+}
+
+.bedroom {
+  background-image: url('https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&auto=format');
+  background-size: cover;
+  background-position: center;
+}
+
+.office {
+  background-image: url('https://images.unsplash.com/photo-1593476550610-87baa860004a?w=800&auto=format');
+  background-size: cover;
+  background-position: center;
+}
+
+.gaming {
+  background-image: url('https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=800&auto=format');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Light sources */
+.light-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.light-source {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 2;
+}
+
+/* Living room light positions */
+.living-room .light-source:nth-child(1) {
+  top: 15%;
+  left: 25%;
+}
+
+.living-room .light-source:nth-child(2) {
+  top: 15%;
+  left: 75%;
+}
+
+.living-room .light-source:nth-child(3) {
+  top: 60%;
+  left: 15%;
+}
+
+.living-room .light-source:nth-child(4) {
+  top: 40%;
+  right: 15%;
+}
+
+/* Bedroom light positions */
+.bedroom .light-source:nth-child(1) {
+  top: 15%;
+  left: 50%;
+}
+
+.bedroom .light-source:nth-child(2) {
+  top: 40%;
+  left: 15%;
+}
+
+.bedroom .light-source:nth-child(3) {
+  top: 60%;
+  right: 20%;
+}
+
+/* Office light positions */
+.office .light-source:nth-child(1) {
+  top: 15%;
+  left: 30%;
+}
+
+.office .light-source:nth-child(2) {
+  top: 15%;
+  right: 30%;
+}
+
+.office .light-source:nth-child(3) {
+  top: 60%;
+  left: 50%;
+}
+
+/* Gaming light positions */
+.gaming .light-source:nth-child(1) {
+  top: 20%;
+  left: 20%;
+}
+
+.gaming .light-source:nth-child(2) {
+  top: 20%;
+  right: 20%;
+}
+
+.gaming .light-source:nth-child(3) {
+  top: 50%;
+  left: 10%;
+}
+
+.gaming .light-source:nth-child(4) {
+  top: 50%;
+  right: 10%;
+}
+
+.gaming .light-source:nth-child(5) {
+  top: 80%;
+  left: 50%;
+}
+
+/* Controls for fullscreen and customization */
+.view-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: none;
+}
+
+.control-btn:hover {
+  background: rgba(131, 56, 236, 0.2);
+  border-color: rgba(131, 56, 236, 0.5);
+}
+
+.control-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Customization panel */
+.customize-panel {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.panel-title {
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #f8f9fa;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-label {
+  font-size: 0.9rem;
+  color: #adb5bd;
+}
+
+.color-picker {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  cursor: none;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slider-value {
+  font-size: 0.9rem;
+  color: #adb5bd;
+  text-align: right;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #8338EC;
+  cursor: none;
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #8338EC;
+  cursor: none;
+}
+
+.effect-select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 0.9rem;
+  cursor: none;
+}
+
+.effect-select option {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.customize-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 992px) {
+  .lighting-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .themes-section {
+    order: 2;
+  }
+  
+  .preview-section {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .lighting-container {
+    padding: 1rem;
+  }
+  
+  .lighting-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .lighting-title {
+    font-size: 1.8rem;
+  }
+  
+  .room-preview {
+    height: 350px;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .customize-actions {
+    flex-direction: column;
+  }
+  
+  .customize-actions button {
+    width: 100%;
+  }
+}
+
+/* Ensure cursor is hidden on all interactive elements for custom cursor effect */
+.lighting-container button,
+.lighting-container a,
+.lighting-container input,
+.lighting-container select,
+.lighting-container [role="button"],
+.lighting-container [tabindex],
+.lighting-container .theme-card,
+.lighting-container .room-option,
+.lighting-container .control-btn {
+  cursor: none !important;
+}
+
+/* Ensure cursor follower is on top */
+.cursor-follower {
+  z-index: 9999 !important;
+  pointer-events: none !important;
+}
+
+/* Add lighting effect to room preview */
+.room-preview::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+}
