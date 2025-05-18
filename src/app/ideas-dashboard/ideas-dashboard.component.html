@@ -1,7 +1,9 @@
-<div class="dashboard-container">  <header class="dashboard-header" [class.interactive]="headerInteractive" appCursorEffect>
+<div class="dashboard-container">
+  <header class="dashboard-header" [class.interactive]="headerInteractive" appCursorEffect>
     <div class="header-content">
       <div class="logo-container">
-        <img src="/logo.png" alt="Hackathon Logo" class="logo" (mouseenter)="onLogoHover()" (mouseleave)="onLogoLeave()">
+        <img src="/logo.png" alt="Hackathon Logo" class="logo" (mouseenter)="onLogoHover()"
+          (mouseleave)="onLogoLeave()">
         <div class="header-text">
           <h1>Miscellaneous</h1>
           <div class="header-glow" [class.active]="logoHovered"></div>
@@ -10,112 +12,172 @@
     </div>
   </header>
   @if (selectedIdea === null) {
-    <div class="ideas-grid">
-      @for (idea of hackathonIdeas; track idea.id) {        <div class="idea-card" 
-             [class.implemented]="idea.isImplemented"
-             (click)="idea.isImplemented && selectIdea(idea)"
-             [attr.data-type]="idea.id"
-             appCursorEffect>
-          <div class="card-glow"></div>
-          <div class="content-overlay"></div>
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              @switch (idea.id) {
-                @case ('quote-generator') {
-                  <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
-                  <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
-                }
-                @case ('name-generator') {
-                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20"></path>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                }
-                @case ('color-palette') {
-                  <circle cx="13.5" cy="6.5" r="2.5"></circle>
-                  <circle cx="19" cy="17" r="2"></circle>
-                  <circle cx="6" cy="12" r="3"></circle>
-                  <path d="M14 20.5a2 2 0 1 0-4 0"></path>
-                }
-                @default {
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 8v8"></path>
-                  <path d="M8 12h8"></path>
-                }
-              }
-            </svg>
-          </div>
-          <div class="idea-content">
-            <div class="title-container">
-              <h2>{{ idea.title }}</h2>
-              <div class="idea-status">
-                @if (idea.isImplemented) {
-                  <span class="status-badge implemented">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M20 6 9 17l-5-5"></path>
-                    </svg>
-                    Available
-                  </span>
-                } @else {
-                  <span class="status-badge pending">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                      <path d="M12 8v4"></path>
-                      <path d="M12 16h.01"></path>
-                    </svg>
-                    Coming Soon
-                  </span>
-                }
-              </div>
-            </div>
-            <p>{{ idea.description }}</p>
+  <div class="ideas-grid">
+    @for (idea of hackathonIdeas; track idea.id) { <div class="idea-card" [class.implemented]="idea.isImplemented"
+      (click)="idea.isImplemented && selectIdea(idea)" [attr.data-type]="idea.id" appCursorEffect>
+      <div class="card-glow"></div>
+      <div class="content-overlay"></div>
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          @switch (idea.id) {
+          @case ('quote-generator') {
+          <path
+            d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z">
+          </path>
+          <path
+            d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z">
+          </path>
+          }
+          @case ('name-generator') {
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          }
+          @case ('color-palette') {
+          <circle cx="13.5" cy="6.5" r="2.5"></circle>
+          <circle cx="19" cy="17" r="2"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <path d="M14 20.5a2 2 0 1 0-4 0"></path>
+          }
+          @default {
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 8v8"></path>
+          <path d="M8 12h8"></path>
+          }
+          }
+        </svg>
+      </div>
+      <div class="idea-content">
+        <div class="title-container">
+          <h2>{{ idea.title }}</h2>
+          <div class="idea-status">
             @if (idea.isImplemented) {
-              <button class="try-button" (click)="selectIdea(idea); $event.stopPropagation()">
-                <span>Try It</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m9 18 6-6-6-6"></path>
-                </svg>
-              </button>
+            <span class="status-badge implemented">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              Available
+            </span>
+            } @else {
+            <span class="status-badge pending">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+              </svg>
+              Coming Soon
+            </span>
             }
           </div>
         </div>
-      }
-    </div>
-  } @else {    <div class="idea-detail" appCursorEffect>
-      <div class="idea-detail-header">
-        <button class="back-button" (click)="goBack()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
+        <p>{{ idea.description }}</p>
+        @if (idea.isImplemented) {
+        <button class="try-button" (click)="selectIdea(idea); $event.stopPropagation()">
+          <span>Try It</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"></path>
           </svg>
-          Back to Ideas
         </button>
-        <h2>{{ selectedIdea.title }}</h2>
-      </div>      <div class="idea-component-container" appCursorEffect>        @switch (selectedIdea.id) {
-          @case ('quote-generator') {
-            <app-quote-generator appCursorEffect></app-quote-generator>
-          }
-          @case ('name-generator') {
-            <app-name-generator appCursorEffect></app-name-generator>
-          }
-          @case ('color-palette') {
-            <app-color-palette-maker appCursorEffect></app-color-palette-maker>
-          }          @case ('ascii-art') {
-            <app-ascii-art-viewer appCursorEffect></app-ascii-art-viewer>
-          }          @case ('countdown-timer') {
-            <app-countdown-timer appCursorEffect></app-countdown-timer>
-          }          @case ('daily-trivia') {
-            <app-daily-trivia appCursorEffect></app-daily-trivia>
-          }          @case ('lighting-theme') {
-            <app-lighting-visualizer appCursorEffect></app-lighting-visualizer>
-          }
-          @case ('periodic-table') {
-            <app-periodic-table appCursorEffect></app-periodic-table>
-          }
-          @default {
-            <!-- Future components will automatically have cursor effect -->
-            <div>Component not found</div>
-          }
         }
       </div>
     </div>
+    }
+  </div>
+  } @else { <div class="idea-detail" appCursorEffect>
+    <div class="idea-detail-header">
+      <button class="back-button" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Ideas
+      </button>
+      <h2>{{ selectedIdea.title }}</h2>
+    </div>
+    <div class="idea-component-container" appCursorEffect> @switch (selectedIdea.id) {
+      @case ('quote-generator') {
+      <app-quote-generator appCursorEffect></app-quote-generator>
+      }
+      @case ('name-generator') {
+      <app-name-generator appCursorEffect></app-name-generator>
+      }
+      @case ('color-palette') {
+      <app-color-palette-maker appCursorEffect></app-color-palette-maker>
+      } @case ('ascii-art') {
+      <app-ascii-art-viewer appCursorEffect></app-ascii-art-viewer>
+      } @case ('countdown-timer') {
+      <app-countdown-timer appCursorEffect></app-countdown-timer>
+      } @case ('daily-trivia') {
+      <app-daily-trivia appCursorEffect></app-daily-trivia>
+      } @case ('lighting-theme') {
+      <app-lighting-visualizer appCursorEffect></app-lighting-visualizer>
+      } @case ('periodic-table') {
+      <app-periodic-table appCursorEffect></app-periodic-table>
+      } @case ('data-randomizer') {
+      <app-data-randomizer-visualizer appCursorEffect></app-data-randomizer-visualizer>
+      }
+      @case ('soundboard') {
+      <app-interactive-soundboard appCursorEffect></app-interactive-soundboard>
+      }
+      @default {
+      <!-- Future components will automatically have cursor effect -->
+      <div>Component not found</div>
+      }
+      }
+    </div>
+  </div>
   }
+
+  <!-- Footer -->
+  <footer class="dashboard-footer" appCursorEffect>
+    <div class="footer-content">
+      <div class="copyright">
+        <span>Adhnan Shereef T &copy; 2025</span>
+      </div>
+      <div class="social-links">
+        <a href="https://www.adhnan.tech" target="_blank" class="social-link" appCursorEffect>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </a>
+        <a href="https://github.com/adhnanshereef/" target="_blank" class="social-link" appCursorEffect>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+            </path>
+          </svg>
+        </a> <a href="https://www.instagram.com/adhnanshereef/" target="_blank" class="social-link" appCursorEffect>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>        <a href="https://x.com/adhnanshereef" target="_blank" class="social-link" appCursorEffect>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1200 1227" fill="none"
+            stroke="none">
+            <path
+              d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"
+              fill="currentColor" />
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/adhnanshereef" target="_blank" class="social-link" appCursorEffect>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
 </div>

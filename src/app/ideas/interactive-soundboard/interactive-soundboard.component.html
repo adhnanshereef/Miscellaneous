@@ -1,0 +1,175 @@
+<div class="soundboard-container" appCursorEffect>
+  <div class="soundboard-header">
+    <h2 class="soundboard-title">Interactive Soundboard</h2>
+    
+    <div class="controls">
+      <div class="search-container">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchChange()" 
+          placeholder="Search sounds..." 
+          class="search-input"
+          appCursorEffect
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+
+      <div class="category-filters">
+        @for (category of categories; track category.id) {
+          <button
+            class="category-filter"
+            [class.active]="selectedCategory === category.id"
+            (click)="filterByCategory(category.id)"
+            appCursorEffect
+          >
+            {{ category.name }}
+          </button>
+        }
+      </div>
+
+      <button class="help-button" (click)="toggleHelp()" appCursorEffect>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="soundboard-main">
+    <div class="sound-grid">
+      @for (sound of filteredSounds; track sound.id) {
+        <div 
+          class="sound-pad"
+          [class.active]="sound === selectedSound"
+          [style.background]="'linear-gradient(135deg, ' + sound.color + '80, ' + adjustColor(sound.color, -40) + '90)'"
+          (click)="playSound(sound)"
+          appCursorEffect
+        >
+          <div class="sound-name">{{ sound.name }}</div>
+          @if (sound.hotkey) {
+            <div class="sound-hotkey">{{ sound.hotkey }}</div>
+          }
+          <div class="sound-ripple" [@ripple] *ngIf="sound === lastPlayedSound"></div>
+        </div>
+      }
+      
+      @if (filteredSounds.length === 0) {
+        <div class="no-results">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          <p>No sounds match your filters</p>
+        </div>
+      }
+    </div>
+
+    <div class="visualizer-panel">
+      <div class="waveform-container">
+        <canvas #soundboardCanvas class="waveform-canvas"></canvas>
+        
+        @if (selectedSound) {
+          <div class="sound-info">
+            <h3>{{ selectedSound.name }}</h3>
+            @if (selectedSound.description) {
+              <p>{{ selectedSound.description }}</p>
+            }
+            <div class="sound-meta">
+              @if (selectedSound.duration) {
+                <span class="duration">{{ selectedSound.duration.toFixed(1) }}s</span>
+              }
+              @if (selectedSound.category) {
+                <span class="category">{{ selectedSound.category }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="volume-control">
+        <span class="volume-icon low" [class.active]="volume < 33">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          </svg>
+        </span>
+        <span class="volume-icon medium" [class.active]="volume >= 33 && volume < 66">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+        </span>
+        <span class="volume-icon high" [class.active]="volume >= 66">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+        </span>
+        
+        <input 
+          type="range" 
+          min="0" 
+          max="100" 
+          [(ngModel)]="volume" 
+          (input)="onVolumeChange()"
+          class="volume-slider"
+          appCursorEffect
+        >
+        <span class="volume-percentage">{{ volume }}%</span>
+      </div>
+    </div>
+  </div>
+  <!-- Help Modal -->
+  @if (helpVisible) {
+    <div class="help-overlay" (click)="toggleHelp()" appCursorEffect>
+      <div class="help-modal" (click)="$event.stopPropagation()" [@fadeIn]>
+        <div class="help-header">
+          <h3>How to Use the Soundboard</h3>
+          <button class="close-button" (click)="toggleHelp()" appCursorEffect>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="help-content">
+          <div class="help-section">
+            <h4>Playing Sounds</h4>
+            <p>Click on any sound pad to play the associated sound. You can also use keyboard shortcuts (shown on each pad) to quickly trigger sounds.</p>
+          </div>
+          
+          <div class="help-section">
+            <h4>Sound Categories</h4>
+            <p>Filter sounds by category using the buttons at the top. You can also search for specific sounds using the search box.</p>
+          </div>
+          
+          <div class="help-section">
+            <h4>Volume Control</h4>
+            <p>Adjust the volume using the slider at the bottom of the visualizer panel.</p>
+          </div>
+          
+          <div class="help-section">
+            <h4>Keyboard Shortcuts</h4>
+            <div class="shortcuts-grid">
+              @for (sound of sounds; track sound.id) {
+                @if (sound.hotkey) {
+                  <div class="shortcut-item">
+                    <span class="shortcut-key">{{ sound.hotkey }}</span>
+                    <span class="shortcut-action">{{ sound.name }}</span>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
