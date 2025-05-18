@@ -8,7 +8,6 @@ export type ElementCategory =
     | 'nonmetal'
     | 'lanthanide'
     | 'actinide'
-    | 'alkaline-earth-metal'
     | 'unknown';
 
 export interface Element {
@@ -83,7 +82,7 @@ export const elementsData: Element[] = [
         symbol: 'Be',
         name: 'Beryllium',
         atomicWeight: 9.0122,
-        category: 'alkaline-earth-metal',
+        category: 'alkaline-earth',
         electronConfiguration: '1s² 2s²',
         electronegativity: 1.57,
         density: 1.85,
@@ -211,7 +210,7 @@ export const elementsData: Element[] = [
         symbol: 'Mg',
         name: 'Magnesium',
         atomicWeight: 24.305,
-        category: 'alkaline-earth-metal',
+        category: 'alkaline-earth',
         electronConfiguration: '1s² 2s² 2p⁶ 3s²',
         electronegativity: 1.31,
         density: 1.738,
@@ -339,7 +338,7 @@ export const elementsData: Element[] = [
         symbol: 'Ca',
         name: 'Calcium',
         atomicWeight: 40.078,
-        category: 'alkaline-earth-metal',
+        category: 'alkaline-earth',
         electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s²',
         electronegativity: 1.00,
         density: 1.55,
@@ -627,7 +626,7 @@ export const elementsData: Element[] = [
         symbol: 'Sr',
         name: 'Strontium',
         atomicWeight: 87.62,
-        category: 'alkaline-earth-metal',
+        category: 'alkaline-earth',
         electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s²',
         electronegativity: 0.95,
         density: 2.64,
@@ -915,7 +914,7 @@ export const elementsData: Element[] = [
         symbol: 'Ba',
         name: 'Barium',
         atomicWeight: 137.327,
-        category: 'alkaline-earth-metal',
+        category: 'alkaline-earth',
         electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s²',
         electronegativity: 0.89,
         density: 3.51,
@@ -1427,7 +1426,7 @@ export const elementsData: Element[] = [
         symbol: 'Ra',
         name: 'Radium',
         atomicWeight: 226,
-        category: 'alkaline-earth-metal',
+        category: 'alkaline-earth',
         electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 7s²',
         electronegativity: 0.9,
         density: 5.5,

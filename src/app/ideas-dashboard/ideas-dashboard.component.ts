@@ -20,7 +20,8 @@ interface HackathonIdea {
   component?: any;
 }
 
-@Component({  selector: 'app-ideas-dashboard',
+@Component({
+  selector: 'app-ideas-dashboard',
   standalone: true,
   imports: [
     CommonModule,
@@ -42,67 +43,76 @@ interface HackathonIdea {
 export class IdeasDashboardComponent {
   hackathonIdeas: HackathonIdea[] = [
     {
-      id: 'quote-generator',
-      title: 'Random Quote Generator',
-      description: 'Get inspired with quotes that fade in beautifully when you click the button.',
-      isImplemented: true,
-      component: QuoteGeneratorComponent
-    },    {
-      id: 'name-generator',
-      title: 'Name Generator',
-      description: 'Generate creative names with a theme switcher for different contexts.',
-      isImplemented: true,
-      component: NameGeneratorComponent
-    },    {
-      id: 'color-palette',
-      title: 'Color Palette Maker',
-      description: 'Create beautiful color palettes with hex codes and easy copy buttons.',
-      isImplemented: true,
-      component: ColorPaletteMakerComponent    },    {
-      id: 'ascii-art',
-      title: 'ASCII Art Viewer',
-      description: 'Create, view and share ASCII art with a responsive interface.',
-      isImplemented: true,
-      component: AsciiArtViewerComponent
-    },    {
-      id: 'countdown-timer',
-      title: 'Countdown Timer',
-      description: 'Set a future time and watch the countdown with sound notifications.',
-      isImplemented: true,
-      component: CountdownTimerComponent
-    },    {
-      id: 'daily-trivia',
-      title: 'Daily Trivia Display',
-      description: 'Learn something new every day with interesting trivia facts.',
-      isImplemented: true,
-      component: DailyTriviaComponent
-    },    {
-      id: 'lighting-theme',
-      title: 'Lighting Theme Visualizer',
-      description: 'Adjust sliders to change the time and brightness of your lighting theme.',
-      isImplemented: true,
-      component: LightingVisualizerComponent
-    },    {
-      id: 'soundboard',
-      title: 'Interactive Soundboard',
-      description: 'Play sounds with hotkeys and see visual waveform representations.',
-      isImplemented: true,
-      component: InteractiveSoundboardComponent
-    },{
       id: 'periodic-table',
       title: 'Interactive Periodic Table',
       description: 'Explore elements with detailed information on hover and smart filtering.',
       isImplemented: true,
       component: PeriodicTableComponent
-    },    {
+    }, {
       id: 'data-randomizer',
       title: 'Data Randomizer Visualizer',
       description: 'Generate random data and visualize it as pie charts, bar graphs, or lists.',
       isImplemented: true,
       component: DataRandomizerVisualizerComponent
+    },
+    {
+      id: 'quote-generator',
+      title: 'Random Quote Generator',
+      description: 'Get inspired with quotes that fade in beautifully when you click the button.',
+      isImplemented: true,
+      component: QuoteGeneratorComponent
+    }, 
+    {
+      id: 'name-generator',
+      title: 'Name Generator',
+      description: 'Generate creative names with a theme switcher for different contexts.',
+      isImplemented: true,
+      component: NameGeneratorComponent
+    }, 
+    {
+      id: 'color-palette',
+      title: 'Color Palette Maker',
+      description: 'Create beautiful color palettes with hex codes and easy copy buttons.',
+      isImplemented: true,
+      component: ColorPaletteMakerComponent
+    }, 
+    {
+      id: 'ascii-art',
+      title: 'ASCII Art Viewer',
+      description: 'Create, view and share ASCII art with a responsive interface.',
+      isImplemented: true,
+      component: AsciiArtViewerComponent
+    }, 
+    {
+      id: 'countdown-timer',
+      title: 'Countdown Timer',
+      description: 'Set a future time and watch the countdown with sound notifications.',
+      isImplemented: true,
+      component: CountdownTimerComponent
+    }, 
+    {
+      id: 'daily-trivia',
+      title: 'Daily Trivia Display',
+      description: 'Learn something new every day with interesting trivia facts.',
+      isImplemented: true,
+      component: DailyTriviaComponent
+    }, 
+    {
+      id: 'soundboard',
+      title: 'Interactive Soundboard',
+      description: 'Play sounds with hotkeys and see visual waveform representations.',
+      isImplemented: true,
+      component: InteractiveSoundboardComponent
+    },
+    {
+      id: 'lighting-theme',
+      title: 'Lighting Theme Visualizer',
+      description: 'Adjust sliders to change the time and brightness of your lighting theme.',
+      isImplemented: true,
+      component: LightingVisualizerComponent
     }
   ];
-  
+
   selectedIdea: HackathonIdea | null = null;
   headerInteractive: boolean = false;
   logoHovered: boolean = false;
@@ -133,7 +143,7 @@ export class IdeasDashboardComponent {
   selectIdea(idea: HackathonIdea): void {
     this.selectedIdea = idea;
   }
-  
+
   goBack(): void {
     this.selectedIdea = null;
   }
@@ -143,12 +153,12 @@ export class IdeasDashboardComponent {
     this.checkIfMobile();
     window.addEventListener('resize', this.checkIfMobile.bind(this));
   }
-  
+
   ngOnDestroy(): void {
     // Remove event listener
     window.removeEventListener('resize', this.checkIfMobile.bind(this));
   }
-  
+
   checkIfMobile(): void {
     this.isMobileDevice = window.innerWidth <= 768;
   }
