@@ -5,35 +5,8 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { BaseIdeaDirective } from '../base-idea.directive';
 import { CursorEffectDirective } from '../../ideas-dashboard/cursor-effect.directive';
 import { CursorEffectUtil } from '../cursor-effect-util';
+import { ElementCategory, elementsData, Element } from '../../../chemical-elements';
 
-interface Element {
-  atomicNumber: number;
-  symbol: string;
-  name: string;
-  atomicWeight: number;
-  category: ElementCategory;
-  electronConfiguration: string;
-  electronegativity?: number | null;
-  density?: number;
-  meltingPoint?: number;
-  boilingPoint?: number;
-  discoveredBy?: string;
-  discoveryYear?: number | null;
-  description: string;
-  commonUses?: string[];
-}
-
-type ElementCategory = 
-  | 'noble-gas'
-  | 'alkali-metal'
-  | 'alkaline-earth'
-  | 'transition-metal'
-  | 'post-transition-metal'
-  | 'metalloid'
-  | 'nonmetal'
-  | 'lanthanide'
-  | 'actinide'
-  | 'unknown';
 
 @Component({
   selector: 'app-periodic-table',
@@ -80,14 +53,16 @@ export class PeriodicTableComponent extends BaseIdeaDirective implements OnInit,
   sortBy: 'atomicNumber' | 'name' | 'atomicWeight' = 'atomicNumber';
   sortDirection: 'asc' | 'desc' = 'asc';
   showLegend: boolean = true;
+
+  // Element data
+  elements: Element[] = elementsData;
   
   // Element details state
   selectedElement: Element | null = null;
-  
-  // UI state
+    // UI state
   isMobile: boolean = false;
   isTablet: boolean = false;
-  tableZoom: number = 1;
+  tableZoom: number = 0.845;
   
   // Categories for filtering
   categories: {id: ElementCategory | 'all', name: string}[] = [
@@ -103,245 +78,26 @@ export class PeriodicTableComponent extends BaseIdeaDirective implements OnInit,
     {id: 'actinide', name: 'Actinides'}
   ];
 
-  // Periodic table data - includes all elements
-  elements: Element[] = [
-    {
-      atomicNumber: 1,
-      symbol: 'H',
-      name: 'Hydrogen',
-      atomicWeight: 1.008,
-      category: 'nonmetal',
-      electronConfiguration: '1s¹',
-      electronegativity: 2.2,
-      density: 0.0000899,
-      meltingPoint: -259.16,
-      boilingPoint: -252.879,
-      discoveredBy: 'Henry Cavendish',
-      discoveryYear: 1766,
-      description: 'Hydrogen is the lightest and most abundant chemical element in the universe, constituting approximately 75% of all normal matter.',
-      commonUses: ['Fuel', 'Ammonia production', 'Oil refining', 'Rocket fuel']
-    },
-    {
-      atomicNumber: 2,
-      symbol: 'He',
-      name: 'Helium',
-      atomicWeight: 4.0026,
-      category: 'noble-gas',
-      electronConfiguration: '1s²',
-      electronegativity: null,
-      density: 0.0001785,
-      meltingPoint: -272.2,
-      boilingPoint: -268.93,
-      discoveredBy: 'Pierre Janssen, Norman Lockyer',
-      discoveryYear: 1868,
-      description: 'Helium is a colorless, odorless, tasteless, non-toxic, inert, monatomic gas, the first in the noble gas group in the periodic table.',
-      commonUses: ['Balloons', 'Cooling MRI machines', 'Diving mixture', 'Leak detection']
-    },
-    {
-      atomicNumber: 3,
-      symbol: 'Li',
-      name: 'Lithium',
-      atomicWeight: 6.94,
-      category: 'alkali-metal',
-      electronConfiguration: '1s² 2s¹',
-      electronegativity: 0.98,
-      density: 0.534,
-      meltingPoint: 180.50,
-      boilingPoint: 1342,
-      discoveredBy: 'Johan August Arfwedson',
-      discoveryYear: 1817,
-      description: 'Lithium is a soft, silvery-white alkali metal. Under standard conditions, it is the lightest metal and the lightest solid element.',
-      commonUses: ['Batteries', 'Medication', 'Aerospace alloys', 'Nuclear fusion']
-    },
-    {
-      atomicNumber: 6,
-      symbol: 'C',
-      name: 'Carbon',
-      atomicWeight: 12.011,
-      category: 'nonmetal',
-      electronConfiguration: '1s² 2s² 2p²',
-      electronegativity: 2.55,
-      density: 2.267,
-      meltingPoint: 3550,
-      boilingPoint: 4027,
-      discoveredBy: 'Known since antiquity',
-      discoveryYear: null,
-      description: 'Carbon is a nonmetal that has been known since ancient times. Carbon is present in all known life forms and is the 4th most abundant element in the universe by mass.',
-      commonUses: ['Steel making', 'Construction', 'Fuel', 'Nanotechnology']
-    },
-    {
-      atomicNumber: 8,
-      symbol: 'O',
-      name: 'Oxygen',
-      atomicWeight: 15.999,
-      category: 'nonmetal',
-      electronConfiguration: '1s² 2s² 2p⁴',
-      electronegativity: 3.44,
-      density: 0.001429,
-      meltingPoint: -218.79,
-      boilingPoint: -182.962,
-      discoveredBy: 'Carl Wilhelm Scheele, Joseph Priestley',
-      discoveryYear: 1774,
-      description: 'Oxygen is a member of the chalcogen group on the periodic table, a highly reactive nonmetal, and an oxidizing agent that readily forms oxides with most elements as well as with other compounds.',
-      commonUses: ['Medical treatment', 'Steel making', 'Rocket propellant', 'Life support']
-    },
-    {
-      atomicNumber: 11,
-      symbol: 'Na',
-      name: 'Sodium',
-      atomicWeight: 22.990,
-      category: 'alkali-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s¹',
-      electronegativity: 0.93,
-      density: 0.968,
-      meltingPoint: 97.794,
-      boilingPoint: 882.940,
-      discoveredBy: 'Humphry Davy',
-      discoveryYear: 1807,
-      description: 'Sodium is a soft, silvery-white, highly reactive metal. Sodium is an alkali metal, being in group 1 of the periodic table.',
-      commonUses: ['Table salt (NaCl)', 'Street lights', 'Chemical manufacturing', 'Nuclear reactors']
-    },
-    {
-      atomicNumber: 17,
-      symbol: 'Cl',
-      name: 'Chlorine',
-      atomicWeight: 35.45,
-      category: 'nonmetal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁵',
-      electronegativity: 3.16,
-      density: 0.003214,
-      meltingPoint: -101.5,
-      boilingPoint: -34.04,
-      discoveredBy: 'Carl Wilhelm Scheele',
-      discoveryYear: 1774,
-      description: 'Chlorine is a yellow-green gas at room temperature and atmospheric pressure. It is an extremely reactive element and a strong oxidizing agent.',
-      commonUses: ['Water disinfection', 'Bleaches', 'PVC production', 'Chemical manufacturing']
-    },
-    {
-      atomicNumber: 26,
-      symbol: 'Fe',
-      name: 'Iron',
-      atomicWeight: 55.845,
-      category: 'transition-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶',
-      electronegativity: 1.83,
-      density: 7.874,
-      meltingPoint: 1538,
-      boilingPoint: 2862,
-      discoveredBy: 'Known since ancient times',
-      discoveryYear: null,
-      description: 'Iron is a metal that belongs to the transition metals and is, by mass, the most common element on Earth, forming much of Earth\'s outer and inner core.',
-      commonUses: ['Steel production', 'Construction', 'Automotive industry', 'Tools']
-    },
-    {
-      atomicNumber: 29,
-      symbol: 'Cu',
-      name: 'Copper',
-      atomicWeight: 63.546,
-      category: 'transition-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d¹⁰',
-      electronegativity: 1.9,
-      density: 8.96,
-      meltingPoint: 1084.62,
-      boilingPoint: 2560,
-      discoveredBy: 'Middle East (9000 BCE)',
-      discoveryYear: null,
-      description: 'Copper is a soft, malleable, and ductile metal with high thermal and electrical conductivity. It is one of the few metals that can occur in nature in a directly usable metallic form.',
-      commonUses: ['Electrical wiring', 'Plumbing', 'Cookware', 'Electronics']
-    },
-    {
-      atomicNumber: 47,
-      symbol: 'Ag',
-      name: 'Silver',
-      atomicWeight: 107.8682,
-      category: 'transition-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹ 4d¹⁰',
-      electronegativity: 1.93,
-      density: 10.49,
-      meltingPoint: 961.78,
-      boilingPoint: 2162,
-      discoveredBy: 'Known since antiquity',
-      discoveryYear: null,
-      description: 'Silver is a soft, white, lustrous transition metal, exhibiting the highest electrical conductivity, thermal conductivity, and reflectivity of any metal.',
-      commonUses: ['Jewelry', 'Photography', 'Electronics', 'Silverware']
-    },
-    {
-      atomicNumber: 79,
-      symbol: 'Au',
-      name: 'Gold',
-      atomicWeight: 196.9665,
-      category: 'transition-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹ 4d¹⁰ 5p⁶ 6s¹ 4f¹⁴ 5d¹⁰',
-      electronegativity: 2.54,
-      density: 19.3,
-      meltingPoint: 1064.18,
-      boilingPoint: 2856,
-      discoveredBy: 'Middle East (Before 6000 BCE)',
-      discoveryYear: null,
-      description: 'Gold is a bright, slightly reddish yellow, dense, soft, malleable, and ductile metal. It is one of the least reactive chemical elements and is solid under standard conditions.',
-      commonUses: ['Jewelry', 'Currency', 'Electronics', 'Dentistry']
-    },
-    {
-      atomicNumber: 80,
-      symbol: 'Hg',
-      name: 'Mercury',
-      atomicWeight: 200.59,
-      category: 'transition-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰',
-      electronegativity: 2.00,
-      density: 13.546,
-      meltingPoint: -38.83,
-      boilingPoint: 356.73,
-      discoveredBy: 'Ancient Chinese and Indians',
-      discoveryYear: null,
-      description: 'Mercury is a heavy, silvery-white metal. It is the only metallic element that is liquid at standard conditions for temperature and pressure.',
-      commonUses: ['Thermometers', 'Fluorescent lamps', 'Dental amalgam', 'Batteries']
-    },
-    {
-      atomicNumber: 82,
-      symbol: 'Pb',
-      name: 'Lead',
-      atomicWeight: 207.2,
-      category: 'post-transition-metal',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p²',
-      electronegativity: 2.33,
-      density: 11.34,
-      meltingPoint: 327.462,
-      boilingPoint: 1749,
-      discoveredBy: 'Known since ancient times',
-      discoveryYear: null,
-      description: 'Lead is a heavy metal that is denser than most common materials. It is soft and malleable, and also has a relatively low melting point.',
-      commonUses: ['Batteries', 'Radiation protection', 'Bullets', 'Construction']
-    },
-    {
-      atomicNumber: 92,
-      symbol: 'U',
-      name: 'Uranium',
-      atomicWeight: 238.0289,
-      category: 'actinide',
-      electronConfiguration: '1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 7s² 5f⁴ 6d¹',
-      electronegativity: 1.38,
-      density: 19.05,
-      meltingPoint: 1132.9,
-      boilingPoint: 4131,
-      discoveredBy: 'Martin Heinrich Klaproth',
-      discoveryYear: 1789,
-      description: 'Uranium is a silvery-white metal in the actinide series of the periodic table. It is weakly radioactive because all isotopes of uranium are unstable.',
-      commonUses: ['Nuclear energy', 'Nuclear weapons', 'Radiation shielding', 'Aircraft counterweights']
-    },
-    // More elements would be added in a complete implementation
-  ];
-
   constructor(
     elementRef: ElementRef,
     private renderer: Renderer2
   ) {
     super(elementRef);
   }
-
   override ngOnInit(): void {
     super.ngOnInit();
     this.checkScreenSize();
+    
+    // Ensure the proper initial zoom level is applied
+    if (this.view === 'table') {
+      if (this.isMobile) {
+        this.tableZoom = 0.6;
+      } else if (this.isTablet) {
+        this.tableZoom = 0.7;
+      } else {
+        this.tableZoom = 0.845;
+      }
+    }
   }
   
   override ngAfterViewInit(): void {
@@ -359,16 +115,17 @@ export class PeriodicTableComponent extends BaseIdeaDirective implements OnInit,
       );
     });
   }
-  
-  @HostListener('window:resize', [])
+    @HostListener('window:resize', [])
   checkScreenSize(): void {
     this.isMobile = window.innerWidth < 768;
     this.isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
     
     if (this.isMobile && this.view === 'table') {
+      this.tableZoom = 0.6;
+    } else if (this.isTablet && this.view === 'table') {
       this.tableZoom = 0.7;
     } else {
-      this.tableZoom = 1;
+      this.tableZoom = 0.8;
     }
   }
 
@@ -410,13 +167,41 @@ export class PeriodicTableComponent extends BaseIdeaDirective implements OnInit,
   toggleLegend(): void {
     this.showLegend = !this.showLegend;
   }
-  
-  adjustZoom(amount: number): void {
+    adjustZoom(amount: number): void {
+    const previousZoom = this.tableZoom;
     this.tableZoom = Math.max(0.5, Math.min(2, this.tableZoom + amount));
+    
+    // Center the view after zooming
+    setTimeout(() => {
+      this.centerPeriodicTable(previousZoom);
+    }, 50);
   }
   
-  resetZoom(): void {
-    this.tableZoom = 1;
+  /**
+   * Centers the periodic table in the container after zooming
+   */
+  centerPeriodicTable(previousZoom: number): void {
+    const tableContainer = this.elementRef?.nativeElement?.querySelector('.table-container');
+    if (tableContainer) {
+      // Calculate how much to adjust scroll position based on zoom change
+      const zoomRatio = this.tableZoom / previousZoom;
+      const currentScrollLeft = tableContainer.scrollLeft;
+      const currentScrollTop = tableContainer.scrollTop;
+      
+      // Adjust scroll position to keep centered content visible
+      tableContainer.scrollLeft = currentScrollLeft * zoomRatio;
+      tableContainer.scrollTop = currentScrollTop * zoomRatio;
+    }
+  }
+    resetZoom(): void {
+    // Reset to the appropriate zoom level based on screen size
+    if (this.isMobile) {
+      this.tableZoom = 0.6;
+    } else if (this.isTablet) {
+      this.tableZoom = 0.7;
+    } else {
+      this.tableZoom = 0.8;
+    }
   }
   
   setSortBy(sortOption: 'atomicNumber' | 'name' | 'atomicWeight'): void {
@@ -459,29 +244,155 @@ export class PeriodicTableComponent extends BaseIdeaDirective implements OnInit,
   getElementClass(category: ElementCategory): string {
     return `element-${category}`;
   }
-  
-  getPositionStyles(atomicNumber: number): any {
-    // Define positions for each element in the periodic table layout
-    // This is a simplified version - a full implementation would have proper positions for all elements
+    getPositionStyles(atomicNumber: number): any {
+    // Define positions for each element in the standard periodic table layout
     const positions: {[key: number]: {row: number, col: number}} = {
-      1: {row: 1, col: 1},
-      2: {row: 1, col: 18},
-      3: {row: 2, col: 1},
-      6: {row: 2, col: 14},
-      8: {row: 2, col: 16},
-      11: {row: 3, col: 1},
-      17: {row: 3, col: 17},
-      26: {row: 4, col: 8},
-      29: {row: 4, col: 11},
-      47: {row: 5, col: 11},
-      79: {row: 6, col: 11},
-      80: {row: 6, col: 12},
-      82: {row: 6, col: 14},
-      92: {row: 7, col: 4}
+      // Period 1
+      1: {row: 1, col: 1},    // H
+      2: {row: 1, col: 18},   // He
+      
+      // Period 2
+      3: {row: 2, col: 1},    // Li
+      4: {row: 2, col: 2},    // Be
+      5: {row: 2, col: 13},   // B
+      6: {row: 2, col: 14},   // C
+      7: {row: 2, col: 15},   // N
+      8: {row: 2, col: 16},   // O
+      9: {row: 2, col: 17},   // F
+      10: {row: 2, col: 18},  // Ne
+      
+      // Period 3
+      11: {row: 3, col: 1},   // Na
+      12: {row: 3, col: 2},   // Mg
+      13: {row: 3, col: 13},  // Al
+      14: {row: 3, col: 14},  // Si
+      15: {row: 3, col: 15},  // P
+      16: {row: 3, col: 16},  // S
+      17: {row: 3, col: 17},  // Cl
+      18: {row: 3, col: 18},  // Ar
+      
+      // Period 4
+      19: {row: 4, col: 1},   // K
+      20: {row: 4, col: 2},   // Ca
+      21: {row: 4, col: 3},   // Sc
+      22: {row: 4, col: 4},   // Ti
+      23: {row: 4, col: 5},   // V
+      24: {row: 4, col: 6},   // Cr
+      25: {row: 4, col: 7},   // Mn
+      26: {row: 4, col: 8},   // Fe
+      27: {row: 4, col: 9},   // Co
+      28: {row: 4, col: 10},  // Ni
+      29: {row: 4, col: 11},  // Cu
+      30: {row: 4, col: 12},  // Zn
+      31: {row: 4, col: 13},  // Ga
+      32: {row: 4, col: 14},  // Ge
+      33: {row: 4, col: 15},  // As
+      34: {row: 4, col: 16},  // Se
+      35: {row: 4, col: 17},  // Br
+      36: {row: 4, col: 18},  // Kr
+      
+      // Period 5
+      37: {row: 5, col: 1},   // Rb
+      38: {row: 5, col: 2},   // Sr
+      39: {row: 5, col: 3},   // Y
+      40: {row: 5, col: 4},   // Zr
+      41: {row: 5, col: 5},   // Nb
+      42: {row: 5, col: 6},   // Mo
+      43: {row: 5, col: 7},   // Tc
+      44: {row: 5, col: 8},   // Ru
+      45: {row: 5, col: 9},   // Rh
+      46: {row: 5, col: 10},  // Pd
+      47: {row: 5, col: 11},  // Ag
+      48: {row: 5, col: 12},  // Cd
+      49: {row: 5, col: 13},  // In
+      50: {row: 5, col: 14},  // Sn
+      51: {row: 5, col: 15},  // Sb
+      52: {row: 5, col: 16},  // Te
+      53: {row: 5, col: 17},  // I
+      54: {row: 5, col: 18},  // Xe
+      
+      // Period 6
+      55: {row: 6, col: 1},   // Cs
+      56: {row: 6, col: 2},   // Ba
+      
+      // Lanthanides (shown in row 8 for layout)
+      57: {row: 9, col: 3},   // La
+      58: {row: 9, col: 4},   // Ce
+      59: {row: 9, col: 5},   // Pr
+      60: {row: 9, col: 6},   // Nd
+      61: {row: 9, col: 7},   // Pm
+      62: {row: 9, col: 8},   // Sm
+      63: {row: 9, col: 9},   // Eu
+      64: {row: 9, col: 10},  // Gd
+      65: {row: 9, col: 11},  // Tb
+      66: {row: 9, col: 12},  // Dy
+      67: {row: 9, col: 13},  // Ho
+      68: {row: 9, col: 14},  // Er
+      69: {row: 9, col: 15},  // Tm
+      70: {row: 9, col: 16},  // Yb
+      71: {row: 9, col: 17},  // Lu
+      
+      // Back to Period 6
+      72: {row: 6, col: 4},   // Hf
+      73: {row: 6, col: 5},   // Ta
+      74: {row: 6, col: 6},   // W
+      75: {row: 6, col: 7},   // Re
+      76: {row: 6, col: 8},   // Os
+      77: {row: 6, col: 9},   // Ir
+      78: {row: 6, col: 10},  // Pt
+      79: {row: 6, col: 11},  // Au
+      80: {row: 6, col: 12},  // Hg
+      81: {row: 6, col: 13},  // Tl
+      82: {row: 6, col: 14},  // Pb
+      83: {row: 6, col: 15},  // Bi
+      84: {row: 6, col: 16},  // Po
+      85: {row: 6, col: 17},  // At
+      86: {row: 6, col: 18},  // Rn
+      
+      // Period 7
+      87: {row: 7, col: 1},   // Fr
+      88: {row: 7, col: 2},   // Ra
+      
+      // Actinides (shown in row 9 for layout)
+      89: {row: 10, col: 3},   // Ac
+      90: {row: 10, col: 4},   // Th
+      91: {row: 10, col: 5},   // Pa
+      92: {row: 10, col: 6},   // U
+      93: {row: 10, col: 7},   // Np
+      94: {row: 10, col: 8},   // Pu
+      95: {row: 10, col: 9},   // Am
+      96: {row: 10, col: 10},  // Cm
+      97: {row: 10, col: 11},  // Bk
+      98: {row: 10, col: 12},  // Cf
+      99: {row: 10, col: 13},  // Es
+      100: {row: 10, col: 14}, // Fm
+      101: {row: 10, col: 15}, // Md
+      102: {row: 10, col: 16}, // No
+      103: {row: 10, col: 17}, // Lr
+      
+      // Back to Period 7
+      104: {row: 7, col: 4},  // Rf
+      105: {row: 7, col: 5},  // Db
+      106: {row: 7, col: 6},  // Sg
+      107: {row: 7, col: 7},  // Bh
+      108: {row: 7, col: 8},  // Hs
+      109: {row: 7, col: 9},  // Mt
+      110: {row: 7, col: 10}, // Ds
+      111: {row: 7, col: 11}, // Rg
+      112: {row: 7, col: 12}, // Cn
+      113: {row: 7, col: 13}, // Nh
+      114: {row: 7, col: 14}, // Fl
+      115: {row: 7, col: 15}, // Mc
+      116: {row: 7, col: 16}, // Lv
+      117: {row: 7, col: 17}, // Ts
+      118: {row: 7, col: 18}  // Og
     };
     
     const position = positions[atomicNumber];
-    if (!position) return {gridRow: 1, gridColumn: 1}; // default position
+    if (!position) {
+      console.warn(`No position defined for element ${atomicNumber}`);
+      return {gridRow: 1, gridColumn: 1}; // default position
+    }
     
     return {
       gridRow: position.row,
