@@ -5,6 +5,9 @@ import { NameGeneratorComponent } from '../ideas/name-generator/name-generator.c
 import { ColorPaletteMakerComponent } from '../ideas/color-palette-maker/color-palette-maker.component';
 import { AsciiArtViewerComponent } from '../ideas/ascii-art-viewer/ascii-art-viewer.component';
 import { CountdownTimerComponent } from '../ideas/countdown-timer/countdown-timer.component';
+import { DailyTriviaComponent } from '../ideas/daily-trivia/daily-trivia.component';
+import { LightingVisualizerComponent } from '../ideas/lighting-visualizer/lighting-visualizer.component';
+import { PeriodicTableComponent } from '../ideas/periodic-table/periodic-table.component';
 import { CursorEffectDirective } from './cursor-effect.directive';
 
 interface HackathonIdea {
@@ -17,7 +20,7 @@ interface HackathonIdea {
 
 @Component({  selector: 'app-ideas-dashboard',
   standalone: true,
-  imports: [CommonModule, QuoteGeneratorComponent, NameGeneratorComponent, ColorPaletteMakerComponent, AsciiArtViewerComponent, CountdownTimerComponent, CursorEffectDirective],
+  imports: [CommonModule, QuoteGeneratorComponent, NameGeneratorComponent, ColorPaletteMakerComponent, AsciiArtViewerComponent, CountdownTimerComponent, DailyTriviaComponent, LightingVisualizerComponent, PeriodicTableComponent, CursorEffectDirective],
   templateUrl: './ideas-dashboard.component.html',
   styleUrl: './ideas-dashboard.component.css'
 })
@@ -52,30 +55,30 @@ export class IdeasDashboardComponent {
       description: 'Set a future time and watch the countdown with sound notifications.',
       isImplemented: true,
       component: CountdownTimerComponent
-    },
-    {
+    },    {
       id: 'daily-trivia',
       title: 'Daily Trivia Display',
       description: 'Learn something new every day with interesting trivia facts.',
-      isImplemented: false
-    },
-    {
+      isImplemented: true,
+      component: DailyTriviaComponent
+    },    {
       id: 'lighting-theme',
       title: 'Lighting Theme Visualizer',
       description: 'Adjust sliders to change the time and brightness of your lighting theme.',
-      isImplemented: false
+      isImplemented: true,
+      component: LightingVisualizerComponent
     },
     {
       id: 'soundboard',
       title: 'Interactive Soundboard',
       description: 'Play sounds with hotkeys and see visual waveform representations.',
       isImplemented: false
-    },
-    {
+    },    {
       id: 'periodic-table',
       title: 'Interactive Periodic Table',
       description: 'Explore elements with detailed information on hover and smart filtering.',
-      isImplemented: false
+      isImplemented: true,
+      component: PeriodicTableComponent
     },
     {
       id: 'data-randomizer',

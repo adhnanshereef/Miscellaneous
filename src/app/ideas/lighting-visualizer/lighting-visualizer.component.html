@@ -1,0 +1,239 @@
+<div class="lighting-container" [class.fullscreen]="isFullscreen" appCursorEffect>
+  <div class="lighting-header">
+    <h2 class="lighting-title">Lighting Theme Visualizer</h2>
+    
+    <div class="view-controls">
+      <button class="control-btn" (click)="toggleFullscreen()" appCursorEffect>
+        <svg *ngIf="!isFullscreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5" />
+        </svg>
+        <svg *ngIf="isFullscreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        {{ isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Mode' }}
+      </button>
+    </div>
+  </div>
+  
+  <div class="lighting-content">
+    <!-- Theme Selection Section -->
+    <div class="themes-section" *ngIf="!isCustomizing">
+      <h3>Select a Lighting Theme</h3>
+      
+      <div class="theme-cards">
+        <div 
+          *ngFor="let theme of themes" 
+          class="theme-card" 
+          [class.active]="selectedTheme.id === theme.id"
+          (click)="selectTheme(theme)"
+          appCursorEffect
+        >
+          <div class="theme-header">
+            <h4 class="theme-name">{{ theme.name }}</h4>
+          </div>
+          
+          <div class="theme-preview">
+            <div class="color-preview" [style.background-color]="theme.primaryColor"></div>
+            <div class="color-preview" [style.background-color]="theme.secondaryColor"></div>
+            <div class="color-preview" [style.background-color]="theme.ambientColor"></div>
+          </div>
+          
+          <p class="theme-description">{{ theme.description }}</p>
+        </div>
+      </div>
+      
+      <button class="control-btn" (click)="startCustomizing()" appCursorEffect>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+        Customize Theme
+      </button>
+    </div>
+    
+    <!-- Customization Section -->
+    <div class="themes-section" *ngIf="isCustomizing">
+      <div class="customize-panel" appCursorEffect>
+        <h3 class="panel-title">Customize Lighting Theme</h3>
+        
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="control-label">Theme Name</label>
+            <input 
+              type="text" 
+              class="effect-select" 
+              [(ngModel)]="customTheme.name" 
+              placeholder="Enter theme name"
+              appCursorEffect
+            >
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Primary Color</label>
+            <input 
+              type="color" 
+              class="color-picker" 
+              [(ngModel)]="customTheme.primaryColor"
+              appCursorEffect
+            >
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Secondary Color</label>
+            <input 
+              type="color" 
+              class="color-picker" 
+              [(ngModel)]="customTheme.secondaryColor"
+              appCursorEffect
+            >
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Ambient Color</label>
+            <input 
+              type="color" 
+              class="color-picker" 
+              [(ngModel)]="customTheme.ambientColor"
+              appCursorEffect
+            >
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Light Intensity</label>
+            <div class="slider-container">
+              <input 
+                type="range" 
+                class="slider" 
+                min="0" 
+                max="1" 
+                step="0.1" 
+                [(ngModel)]="customTheme.intensity"
+                appCursorEffect
+              >
+              <span class="slider-value">{{ (customTheme.intensity * 100) | number:'1.0-0' }}%</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Ambient Intensity</label>
+            <div class="slider-container">
+              <input 
+                type="range" 
+                class="slider" 
+                min="0" 
+                max="1" 
+                step="0.1" 
+                [(ngModel)]="customTheme.ambientIntensity"
+                appCursorEffect
+              >
+              <span class="slider-value">{{ (customTheme.ambientIntensity * 100) | number:'1.0-0' }}%</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Animation Speed</label>
+            <div class="slider-container">
+              <input 
+                type="range" 
+                class="slider" 
+                min="0" 
+                max="10" 
+                step="1" 
+                [(ngModel)]="customTheme.speed"
+                appCursorEffect
+              >
+              <span class="slider-value">{{ customTheme.speed }}</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Lighting Effect</label>
+            <select 
+              class="effect-select" 
+              [(ngModel)]="customTheme.effect"
+              appCursorEffect
+            >
+              <option value="static">Static</option>
+              <option value="pulse">Pulsing</option>
+              <option value="flicker">Flickering</option>
+              <option value="rainbow">Rainbow RGB</option>
+              <option value="spot">Spotlight</option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">Description</label>
+            <textarea 
+              class="effect-select" 
+              [(ngModel)]="customTheme.description"
+              rows="2"
+              placeholder="Brief description of your theme"
+              appCursorEffect
+            ></textarea>
+          </div>
+        </div>
+        
+        <div class="customize-actions">
+          <button class="control-btn" (click)="cancelCustomizing()" appCursorEffect>
+            Cancel
+          </button>
+          <button class="control-btn" (click)="saveCustomTheme()" appCursorEffect>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Save Theme
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Preview Section -->
+    <div class="preview-section">
+      <div class="room-options">
+        <button 
+          class="room-option" 
+          [class.active]="previewRoom === 'living-room'"
+          (click)="changeRoom('living-room')"
+          appCursorEffect
+        >
+          Living Room
+        </button>
+        <button 
+          class="room-option" 
+          [class.active]="previewRoom === 'bedroom'"
+          (click)="changeRoom('bedroom')"
+          appCursorEffect
+        >
+          Bedroom
+        </button>
+        <button 
+          class="room-option" 
+          [class.active]="previewRoom === 'office'"
+          (click)="changeRoom('office')"
+          appCursorEffect
+        >
+          Office
+        </button>
+        <button 
+          class="room-option" 
+          [class.active]="previewRoom === 'gaming'"
+          (click)="changeRoom('gaming')"
+          appCursorEffect
+        >
+          Gaming Setup
+        </button>
+      </div>
+      
+      <div class="room-preview" [ngClass]="previewRoom" appCursorEffect>
+        <!-- Light overlay for ambient glow -->
+        <div class="light-overlay"></div>
+        
+        <!-- Light sources -->
+        <div class="light-source"></div>
+        <div class="light-source"></div>
+        <div class="light-source"></div>
+        <div class="light-source"></div>
+        <div class="light-source"></div>
+      </div>
+    </div>
+  </div>
+</div>

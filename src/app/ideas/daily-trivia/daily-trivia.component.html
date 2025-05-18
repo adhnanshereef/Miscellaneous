@@ -1,0 +1,136 @@
+<div class="trivia-container" appCursorEffect>
+  <div class="trivia-header">
+    <h2>Daily Trivia</h2>
+    <div class="stats-summary">
+      <div class="stat-item" appCursorEffect>
+        <span class="stat-value">{{ stats.questionsAnswered }}</span>
+        <span class="stat-label">Questions</span>
+      </div>
+      <div class="stat-item" appCursorEffect>
+        <span class="stat-value">{{ getAccuracyPercentage() }}%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+      <div class="stat-item" [class.active-streak]="stats.streak > 2" appCursorEffect>
+        <span class="stat-value">{{ stats.streak }}</span>
+        <span class="stat-label">Streak</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="weekly-progress" appCursorEffect>
+    <h3>Weekly Progress</h3>
+    <div class="progress-chart">
+      @for (day of stats.questionsPerDay; track day; let i = $index) {
+        <div class="day-progress">
+          <div class="progress-bar" [style.height]="getBarHeight(day)">
+            @if (day > 0) {
+              <span class="progress-value">{{ day }}</span>
+            }
+          </div>
+          <div class="day-label">{{ getDayName(i) }}</div>
+        </div>
+      }
+    </div>
+  </div>
+  
+  @if (isLoading) {
+    <div class="loading-container" appCursorEffect>
+      <div class="loading-spinner"></div>
+      <p>Loading your daily trivia...</p>
+    </div>
+  } @else {
+    @if (currentQuestion) {
+      <div class="trivia-card-container" appCursorEffect>
+        <div class="trivia-card" [@cardFlip]="cardState">
+          <!-- Question Side -->
+          @if (cardState === 'question') {
+            <div class="card-front">
+              @if (currentQuestion.image) {
+                <div class="question-image">
+                  <img [src]="currentQuestion.image" alt="Question image">
+                </div>
+              }
+              
+              <div class="question-content">
+                <div class="question-header">
+                  <span class="question-category">{{ currentQuestion.category }}</span>
+                  <span class="question-difficulty" [attr.data-difficulty]="currentQuestion.difficulty">
+                    {{ currentQuestion.difficulty }}
+                  </span>
+                </div>
+                
+                <h3 class="question-text">{{ currentQuestion.question }}</h3>
+                
+                <div class="answer-options">
+                  @for (option of currentQuestion.options; track option) {
+                    <button 
+                      class="answer-option" 
+                      [class.selected]="selectedAnswer === option"
+                      [class.correct]="isCorrect !== null && option === currentQuestion.answer"
+                      [class.incorrect]="isCorrect !== null && selectedAnswer === option && option !== currentQuestion.answer"
+                      [disabled]="selectedAnswer !== null"
+                      (click)="selectAnswer(option)"
+                      appCursorEffect>
+                      {{ option }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          
+          <!-- Answer Side -->
+          @if (cardState === 'answer') {
+            <div class="card-back">
+              <div class="result-container" [class.correct-answer]="isCorrect" [class.wrong-answer]="!isCorrect">
+                <div class="result-icon">
+                  @if (isCorrect) {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  } @else {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="15" y1="9" x2="9" y2="15"></line>
+                      <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                  }
+                </div>
+                
+                <h3 class="result-title">
+                  @if (isCorrect) {
+                    Correct Answer!
+                  } @else {
+                    Sorry, that's incorrect.
+                  }
+                </h3>
+                
+                <div class="answer-explanation">
+                  <p>The correct answer is:</p>
+                  <div class="correct-answer-highlight">{{ currentQuestion.answer }}</div>
+                  
+                  @if (!isCorrect) {
+                    <p class="selected-answer">You selected: {{ selectedAnswer }}</p>
+                  }
+                </div>
+                
+                <button class="next-question-btn" (click)="getNewQuestion()" appCursorEffect>
+                  Next Question
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      
+      <div class="confetti-container"></div>
+    }
+  }
+  
+  <div class="trivia-footer" appCursorEffect>
+    <button class="reset-stats-btn" (click)="resetStats()" appCursorEffect>
+      Reset Stats
+    </button>
+  </div>
+</div>
